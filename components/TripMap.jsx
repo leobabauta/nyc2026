@@ -85,15 +85,16 @@ export default function TripMap({ day, filteredStops, selectedStop, onSelectStop
   const infoWindowRef = useRef(null);
   const [photoLightbox, setPhotoLightbox] = useState(null); // index into geoPhotos
 
-  // Initialize map
+  // Initialize map — read theme from DOM directly to avoid race with state
   useEffect(() => {
     let cancelled = false;
     loadMapsApi().then(() => {
       if (cancelled || !mapRef.current) return;
+      const dark = document.documentElement.classList.contains("dark");
       mapInstance.current = new google.maps.Map(mapRef.current, {
         center: day.center,
         zoom: day.zoom,
-        styles: isDark ? darkStyles : lightStyles,
+        styles: dark ? darkStyles : lightStyles,
         disableDefaultUI: true,
         zoomControl: true,
       });

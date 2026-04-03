@@ -128,7 +128,7 @@ export default function TripApp() {
       {/* Header */}
       <header className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 shrink-0">
         <div className="px-4 py-3 flex items-center justify-between">
-          <h1 className="text-xl font-bold tracking-tight">
+          <h1 className="text-xl md:text-2xl lg:text-3xl font-bold tracking-tight">
             <span className="text-amber-500 dark:text-amber-400">Eva &amp; Leo&apos;s</span> NYC 2026 Trip
           </h1>
           <DarkModeToggle isDark={isDark} onToggle={toggleDark} />
@@ -154,7 +154,7 @@ export default function TripApp() {
                     : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
               }`}
             >
-              {d.label} <span className="text-xs opacity-75">{d.date.split(" ")[0]}</span>
+              {({ Sunday: "Sun", Monday: "Mon", Tuesday: "Tues", Wednesday: "Wed", Thursday: "Thu", Friday: "Fri", Saturday: "Sat" })[d.date.split(" ")[0]]}
             </button>
           ))}
         </div>
