@@ -13,7 +13,6 @@ function buildDirectionsUrl(stops) {
   if (middle.length <= 8) {
     waypoints = middle;
   } else {
-    // Pick every other stop to stay within Google's 8-waypoint limit
     waypoints = middle.filter((_, i) => i % Math.ceil(middle.length / 8) === 0).slice(0, 8);
   }
 
@@ -42,6 +41,10 @@ export default function Sidebar({
   activeFilter,
   onFilterChange,
 }) {
+  // Build stop id -> 1-based day index
+  const dayIndexMap = {};
+  day.stops.forEach((s, i) => { dayIndexMap[s.id] = i + 1; });
+
   return (
     <div className="p-4 space-y-4">
       {/* Day header */}
@@ -94,6 +97,7 @@ export default function Sidebar({
           <StopCard
             key={stop.id}
             stop={stop}
+            displayNum={dayIndexMap[stop.id]}
             isSelected={selectedStop === stop.id}
             onSelect={() => onSelectStop(stop.id)}
             emoji={typeEmoji[stop.type] || "📍"}
@@ -104,6 +108,18 @@ export default function Sidebar({
             No stops match this filter.
           </p>
         )}
+      </div>
+
+      {/* Print button at bottom */}
+      <div className="pt-2 pb-4">
+        <a
+          href="/print"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-gray-800 text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+        >
+          🖨️ Print / Save PDF
+        </a>
       </div>
     </div>
   );

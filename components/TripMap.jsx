@@ -33,6 +33,24 @@ function loadMapsApi() {
   return mapsLoadPromise;
 }
 
+const darkStyles = [
+  { elementType: "geometry", stylers: [{ color: "#1a1a2e" }] },
+  { elementType: "labels.text.stroke", stylers: [{ color: "#1a1a2e" }] },
+  { elementType: "labels.text.fill", stylers: [{ color: "#8888aa" }] },
+  { featureType: "road", elementType: "geometry", stylers: [{ color: "#2a2a4a" }] },
+  { featureType: "water", elementType: "geometry", stylers: [{ color: "#0e0e2a" }] },
+  { featureType: "poi.park", elementType: "geometry", stylers: [{ color: "#1a2e1a" }] },
+  { featureType: "poi", elementType: "labels", stylers: [{ visibility: "off" }] },
+  { featureType: "poi", elementType: "geometry", stylers: [{ visibility: "off" }] },
+  { featureType: "poi.park", elementType: "geometry", stylers: [{ visibility: "on", color: "#1a2e1a" }] },
+];
+
+const lightStyles = [
+  { featureType: "poi", elementType: "labels", stylers: [{ visibility: "off" }] },
+  { featureType: "poi", elementType: "geometry", stylers: [{ visibility: "off" }] },
+  { featureType: "poi.park", elementType: "geometry", stylers: [{ visibility: "on" }] },
+];
+
 function createMarkerIcon(color, isSelected) {
   const size = isSelected ? 16 : 12;
   const stroke = isSelected ? 3 : 2;
@@ -46,7 +64,7 @@ function createMarkerIcon(color, isSelected) {
   };
 }
 
-export default function TripMap({ day, filteredStops, selectedStop, onSelectStop }) {
+export default function TripMap({ day, filteredStops, selectedStop, onSelectStop, isDark }) {
   const mapRef = useRef(null);
   const mapInstance = useRef(null);
   const markersRef = useRef([]);
@@ -60,14 +78,7 @@ export default function TripMap({ day, filteredStops, selectedStop, onSelectStop
       mapInstance.current = new google.maps.Map(mapRef.current, {
         center: day.center,
         zoom: day.zoom,
-        styles: [
-          { elementType: "geometry", stylers: [{ color: "#1a1a2e" }] },
-          { elementType: "labels.text.stroke", stylers: [{ color: "#1a1a2e" }] },
-          { elementType: "labels.text.fill", stylers: [{ color: "#8888aa" }] },
-          { featureType: "road", elementType: "geometry", stylers: [{ color: "#2a2a4a" }] },
-          { featureType: "water", elementType: "geometry", stylers: [{ color: "#0e0e2a" }] },
-          { featureType: "poi.park", elementType: "geometry", stylers: [{ color: "#1a2e1a" }] },
-        ],
+        styles: isDark ? darkStyles : lightStyles,
         disableDefaultUI: true,
         zoomControl: true,
       });
@@ -77,6 +88,12 @@ export default function TripMap({ day, filteredStops, selectedStop, onSelectStop
     return () => { cancelled = true; };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // Update map styles when dark mode changes
+  useEffect(() => {
+    if (!mapInstance.current) return;
+    mapInstance.current.setOptions({ styles: isDark ? darkStyles : lightStyles });
+  }, [isDark]);
+
   const updateMarkers = useCallback(() => {
     if (!mapInstance.current) return;
 
@@ -84,9 +101,14 @@ export default function TripMap({ day, filteredStops, selectedStop, onSelectStop
     markersRef.current.forEach((m) => m.setMap(null));
     markersRef.current = [];
 
+    // Build a lookup: stop id -> 1-based index within this day
+    const dayIndexMap = {};
+    day.stops.forEach((s, i) => { dayIndexMap[s.id] = i + 1; });
+
     filteredStops.forEach((stop) => {
       const color = markerColors[stop.type] || "#888";
       const isSelected = selectedStop === stop.id;
+      const displayNum = dayIndexMap[stop.id] || stop.id;
       const marker = new google.maps.Marker({
         position: { lat: stop.lat, lng: stop.lng },
         map: mapInstance.current,
@@ -94,7 +116,7 @@ export default function TripMap({ day, filteredStops, selectedStop, onSelectStop
         title: stop.name,
         zIndex: isSelected ? 999 : 1,
         label: {
-          text: String(stop.id),
+          text: String(displayNum),
           color: "white",
           fontSize: isSelected ? "12px" : "10px",
           fontWeight: "bold",

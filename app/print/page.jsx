@@ -10,7 +10,7 @@ const typeLabels = {
 };
 
 export const metadata = {
-  title: "Leo's NYC Trip — Printable Itinerary",
+  title: "Eva & Leo's NYC 2026 Trip — Printable Itinerary",
 };
 
 export default function PrintPage() {
@@ -136,7 +136,7 @@ export default function PrintPage() {
         Print this page
       </button>
 
-      <h1>Leo&apos;s NYC Trip</h1>
+      <h1>Eva &amp; Leo&apos;s NYC 2026 Trip</h1>
       <p className="subtitle">April 5 &ndash; 10, 2026 &middot; 6 days &middot; 52 stops</p>
 
       {days.map((day, di) => (
@@ -147,9 +147,9 @@ export default function PrintPage() {
           <p className="day-narrative">{day.narrative}</p>
 
           <ol>
-            {day.stops.map((stop) => (
+            {day.stops.map((stop, stopIdx) => (
               <li key={stop.id} className="stop-item">
-                <span className="stop-num">{stop.id}.</span>
+                <span className="stop-num">{stopIdx + 1}.</span>
                 <span className="stop-body">
                   <span className="stop-name">{stop.name}</span>
                   <span

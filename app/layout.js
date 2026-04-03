@@ -4,7 +4,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Leo's NYC Trip",
+  title: "Eva & Leo's NYC 2026 Trip",
   description: "6-day NYC trip planner — bookstores, vegan food & museums",
 };
 

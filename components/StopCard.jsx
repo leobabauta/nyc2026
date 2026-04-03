@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { markerColors } from "@/data/itinerary";
 
-export default function StopCard({ stop, isSelected, onSelect, emoji }) {
+export default function StopCard({ stop, displayNum, isSelected, onSelect, emoji }) {
   const [details, setDetails] = useState(null);
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -69,7 +69,7 @@ export default function StopCard({ stop, isSelected, onSelect, emoji }) {
           className="shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold text-white"
           style={{ backgroundColor: color }}
         >
-          {stop.id}
+          {displayNum}
         </span>
 
         <div className="flex-1 min-w-0">

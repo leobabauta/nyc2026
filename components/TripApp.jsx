@@ -30,6 +30,20 @@ export default function TripApp() {
   const [selectedStop, setSelectedStop] = useState(() => getInitialState().stop);
   const [mobileView, setMobileView] = useState("list");
   const [activeFilter, setActiveFilter] = useState("all");
+  const [isDark, setIsDark] = useState(true);
+
+  useEffect(() => {
+    setIsDark(document.documentElement.classList.contains("dark"));
+  }, []);
+
+  const toggleDark = useCallback(() => {
+    setIsDark((prev) => {
+      const next = !prev;
+      document.documentElement.classList.toggle("dark", next);
+      localStorage.setItem("theme", next ? "dark" : "light");
+      return next;
+    });
+  }, []);
 
   const day = days[selectedDay];
 
@@ -59,21 +73,11 @@ export default function TripApp() {
       {/* Header */}
       <header className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 shrink-0">
         <div className="px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <h1 className="text-xl font-bold tracking-tight">
-              <span className="text-amber-500 dark:text-amber-400">Leo&apos;s</span> NYC Trip
-            </h1>
-            <a
-              href="/print"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-gray-800 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-            >
-              🖨️ Print / Save PDF
-            </a>
-          </div>
+          <h1 className="text-xl font-bold tracking-tight">
+            <span className="text-amber-500 dark:text-amber-400">Eva &amp; Leo&apos;s</span> NYC 2026 Trip
+          </h1>
           <div className="flex items-center gap-2">
-            <DarkModeToggle />
+            <DarkModeToggle isDark={isDark} onToggle={toggleDark} />
             {/* Mobile toggle */}
             <button
               onClick={() => setMobileView((v) => (v === "list" ? "map" : "list"))}
@@ -139,6 +143,7 @@ export default function TripApp() {
             filteredStops={filteredStops}
             selectedStop={selectedStop}
             onSelectStop={handleSelectStop}
+            isDark={isDark}
           />
         </div>
       </main>
