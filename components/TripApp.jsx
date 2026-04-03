@@ -35,10 +35,25 @@ export default function TripApp() {
   const [activeFilter, setActiveFilter] = useState("all");
   const [isDark, setIsDark] = useState(true);
   const [userPhotos, setUserPhotos] = useState([]);
+  const [weather, setWeather] = useState({});
   const objectUrlsRef = useRef([]);
 
   useEffect(() => {
     setIsDark(document.documentElement.classList.contains("dark"));
+  }, []);
+
+  // Fetch weather forecast once
+  useEffect(() => {
+    fetch("/api/weather")
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.forecasts) {
+          const map = {};
+          data.forecasts.forEach((f) => { map[f.date] = f; });
+          setWeather(map);
+        }
+      })
+      .catch(() => {});
   }, []);
 
   const toggleDark = useCallback(() => {
@@ -135,14 +150,11 @@ export default function TripApp() {
                     ? "bg-slate-500 text-white"
                     : "bg-amber-500 text-white dark:text-gray-950"
                   : d.travel
-                    ? "bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-600"
+                    ? "bg-slate-300 dark:bg-slate-600 text-slate-700 dark:text-slate-200 hover:bg-slate-400 dark:hover:bg-slate-500"
                     : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
               }`}
             >
-              {d.label}
-              <span className="hidden sm:inline text-xs ml-1 opacity-75">
-                {d.date}
-              </span>
+              {d.label} <span className="text-xs opacity-75">{d.date.split(" ")[0]}</span>
             </button>
           ))}
         </div>
@@ -175,6 +187,7 @@ export default function TripApp() {
             onFilterChange={setActiveFilter}
             userPhotos={userPhotos}
             onPhotosAdded={loadPhotos}
+            weather={weather[day.isoDate]}
           />
         </div>
       </main>

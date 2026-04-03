@@ -8,6 +8,7 @@ export default function StopCard({ stop, displayNum, isSelected, onSelect, emoji
   const [details, setDetails] = useState(null);
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [flightStatus, setFlightStatus] = useState(null);
   const cardRef = useRef(null);
   const color = markerColors[stop.type] || "#888";
 
@@ -23,6 +24,22 @@ export default function StopCard({ stop, displayNum, isSelected, onSelect, emoji
       .catch(() => {})
       .finally(() => setLoading(false));
   }, [isSelected, stop.placeId, details]);
+
+  // Fetch flight status for flight stops (only when within 1 day of flight)
+  useEffect(() => {
+    if (!isSelected || !stop.flightIata || !stop.flightDate || flightStatus) return;
+
+    const flightDay = new Date(stop.flightDate + "T00:00:00");
+    const now = new Date();
+    const diffMs = flightDay - now;
+    const diffDays = diffMs / (1000 * 60 * 60 * 24);
+    if (diffDays > 1 || diffDays < -1) return; // only check within ±1 day
+
+    fetch(`/api/flight?flight=${stop.flightIata}&date=${stop.flightDate}`)
+      .then((r) => r.json())
+      .then((d) => { if (!d.error) setFlightStatus(d); })
+      .catch(() => {});
+  }, [isSelected, stop.flightIata, stop.flightDate, flightStatus]);
 
   // Auto-scroll into view when selected
   useEffect(() => {
@@ -140,9 +157,33 @@ export default function StopCard({ stop, displayNum, isSelected, onSelect, emoji
                   )}
                 </>
               )}
-              {!loading && !details && !stop.placeId && (
+              {!loading && !details && !stop.placeId && !stop.flightIata && (
                 <p className="text-xs text-gray-400 dark:text-gray-500 italic">
-                  No Place ID — details unavailable
+                  No details available
+                </p>
+              )}
+
+              {/* Flight status */}
+              {flightStatus && (
+                <div className="text-xs space-y-0.5">
+                  <p className={`font-medium ${
+                    flightStatus.status === "landed" ? "text-green-600 dark:text-green-400" :
+                    flightStatus.status === "active" ? "text-blue-600 dark:text-blue-400" :
+                    flightStatus.status === "cancelled" ? "text-red-600 dark:text-red-400" :
+                    flightStatus.status === "delayed" || flightStatus.departure?.delay ? "text-amber-600 dark:text-amber-400" :
+                    "text-gray-500 dark:text-gray-400"
+                  }`}>
+                    ✈️ Status: {flightStatus.status?.charAt(0).toUpperCase() + flightStatus.status?.slice(1)}
+                    {flightStatus.departure?.delay ? ` (${flightStatus.departure.delay}min delay)` : ""}
+                  </p>
+                  {flightStatus.departure?.gate && (
+                    <p className="text-gray-500 dark:text-gray-400">Gate: {flightStatus.departure.gate}{flightStatus.departure.terminal ? ` · Terminal ${flightStatus.departure.terminal}` : ""}</p>
+                  )}
+                </div>
+              )}
+              {stop.flightIata && !flightStatus && isSelected && (
+                <p className="text-xs text-gray-400 dark:text-gray-500 italic">
+                  ✈️ Flight status available starting the day before departure
                 </p>
               )}
 

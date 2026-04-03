@@ -50,6 +50,7 @@ export default function Sidebar({
   onFilterChange,
   userPhotos,
   onPhotosAdded,
+  weather,
 }) {
   const [lightboxIndex, setLightboxIndex] = useState(null);
   const [showPostcard, setShowPostcard] = useState(false);
@@ -65,7 +66,17 @@ export default function Sidebar({
         <h2 className="text-lg font-bold text-amber-500 dark:text-amber-400">
           {day.label} — {day.date}
         </h2>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">{day.title}</p>
+        <div className="flex items-center justify-between mt-0.5">
+          <p className="text-sm text-gray-500 dark:text-gray-400">{day.title}</p>
+          {weather && (
+            <span className="text-xs text-gray-500 dark:text-gray-400 shrink-0 ml-2">
+              {weather.icon} {weather.high}°/{weather.low}°F
+              {weather.precipChance > 0 && (
+                <span className="text-blue-500 ml-1">💧{weather.precipChance}%</span>
+              )}
+            </span>
+          )}
+        </div>
         <p className="text-sm text-gray-700 dark:text-gray-300 mt-2 leading-relaxed">
           {day.narrative}
         </p>

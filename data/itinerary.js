@@ -2,6 +2,7 @@ export const days = [
   {
     label: "Day 0",
     date: "Saturday Apr 4",
+    isoDate: "2026-04-04",
     title: "Sacramento → New York",
     travel: true,
     narrative:
@@ -9,16 +10,18 @@ export const days = [
     center: { lat: 40.749, lng: -73.976 },
     zoom: 12,
     stops: [
-      { id: 100, name: "SMF Sacramento Airport", lat: 38.6953, lng: -121.5918, placeId: null, type: "flight", notes: "AA 1625 → Phoenix. Depart 10:07am. Duration 1h 51m.", time: "10:07 AM" },
+      { id: 99, name: "Drive to SMF Airport", lat: 38.6953, lng: -121.5918, placeId: null, type: "transport", notes: "Leave home by car. Allow time for parking + security.", time: "8:00 AM" },
+      { id: 100, name: "AA 1625 → Phoenix", lat: 38.6953, lng: -121.5918, placeId: null, type: "flight", notes: "SMF → PHX. Depart 10:07am, arrive 11:58am. Duration 1h 51m.", time: "10:07 AM", flightIata: "AA1625", flightDate: "2026-04-04" },
       { id: 101, name: "PHX Phoenix Layover", lat: 33.4373, lng: -112.0078, placeId: null, type: "transport", notes: "3h 17m layover. Arrive 11:58am, depart 3:15pm." },
-      { id: 102, name: "AA 2315 → JFK", lat: 40.6413, lng: -73.7781, placeId: null, type: "flight", notes: "PHX → JFK. Depart 3:15pm, arrive 10:59pm. Duration 4h 44m.", time: "3:15 PM" },
-      { id: 103, name: "JFK → Hotel (Taxi/Subway)", lat: 40.6413, lng: -73.7781, placeId: null, type: "transport", notes: "JFK to Midtown. Taxi ~$70 flat rate + tolls, or AirTrain + subway ~$10." },
+      { id: 102, name: "AA 2315 → JFK", lat: 40.6413, lng: -73.7781, placeId: null, type: "flight", notes: "PHX → JFK. Depart 3:15pm, arrive 10:59pm. Duration 4h 44m.", time: "3:15 PM", flightIata: "AA2315", flightDate: "2026-04-04" },
+      { id: 103, name: "Taxi: JFK → Hotel", lat: 40.6413, lng: -73.7781, placeId: null, type: "transport", notes: "Yellow cab flat rate $70 + tolls + tip to Manhattan. ~45–60 min depending on traffic." },
       { id: 104, name: "Courtyard by Marriott", lat: 40.7524, lng: -73.9791, placeId: null, type: "hotel", notes: "3 East 40th St, Manhattan. Check-in 3pm. Conf# 82465339. Phone: +1 212 447 1500." },
     ],
   },
   {
     label: "Day 1",
     date: "Sunday Apr 5",
+    isoDate: "2026-04-05",
     title: "SoHo → LES → Midtown",
     narrative:
       "Start with a late breakfast at Cloudy Donut, browse books at McNally Jackson, then head to your tattoo appointment. Explore the New Museum and the Lower East Side before your evening omakase.",
@@ -39,6 +42,7 @@ export const days = [
   {
     label: "Day 2",
     date: "Monday Apr 6",
+    isoDate: "2026-04-06",
     title: "UWS → High Line → West Village",
     narrative:
       "Head uptown for the Natural History Museum, then wind down through Chelsea Market and the High Line. End the day exploring West Village bookshops and dinner at Anixi.",
@@ -58,6 +62,7 @@ export const days = [
   {
     label: "Day 3",
     date: "Tuesday Apr 7",
+    isoDate: "2026-04-07",
     title: "The Met & Flatiron",
     narrative:
       "Brunch at UT47, then spend the morning at The Met. Walk through Central Park, return to the hotel for a 2pm call, then explore Flatiron bookstores and dinner at Coletta.",
@@ -80,6 +85,7 @@ export const days = [
   {
     label: "Day 4",
     date: "Wednesday Apr 8",
+    isoDate: "2026-04-08",
     title: "MoMA & Maybe Happy Ending",
     narrative:
       "Grab a doughnut at Doughnut Plant, then spend the morning at MoMA. Catch the matinee of Maybe Happy Ending, visit the NYPL reading room, and wrap up with dinner at Hangawi.",
@@ -98,6 +104,7 @@ export const days = [
   {
     label: "Day 5",
     date: "Thursday Apr 9",
+    isoDate: "2026-04-09",
     title: "Brooklyn",
     narrative:
       "A full day in Brooklyn — legendary vegan BEC, a feminist bookstore, and a marathon tour of indie bookshops from Prospect Heights to Williamsburg. End with dinner at Reverie.",
@@ -121,6 +128,7 @@ export const days = [
   {
     label: "Day 6",
     date: "Friday Apr 10",
+    isoDate: "2026-04-10",
     title: "East Village → Newark",
     narrative:
       "Final exploring day — breakfast at abcV, last bookstore visits, lunch at Superiority Burger, and a leisurely afternoon in Tompkins Square Park. Dinner at Avant Garden, then head to the Newark airport hotel for tomorrow's early flight.",
@@ -145,6 +153,7 @@ export const days = [
   {
     label: "Day 7",
     date: "Saturday Apr 11",
+    isoDate: "2026-04-11",
     title: "New York → Sacramento",
     travel: true,
     narrative:
@@ -153,9 +162,9 @@ export const days = [
     zoom: 11,
     stops: [
       { id: 200, name: "Fairfield Inn → EWR", lat: 40.6977, lng: -74.1744, placeId: null, type: "transport", notes: "Hotel shuttle to Newark Liberty airport. Check-out 12pm but leave early!", time: "6:30 AM" },
-      { id: 201, name: "EWR Newark Airport", lat: 40.6895, lng: -74.1745, placeId: null, type: "flight", notes: "AA 1303 → Dallas. Depart 8:00am, arrive 11:03am. Duration 4h 3m.", time: "8:00 AM" },
+      { id: 201, name: "AA 1303 → Dallas", lat: 40.6895, lng: -74.1745, placeId: null, type: "flight", notes: "EWR → DFW. Depart 8:00am, arrive 11:03am. Duration 4h 3m.", time: "8:00 AM", flightIata: "AA1303", flightDate: "2026-04-11" },
       { id: 202, name: "DFW Dallas Layover", lat: 32.8998, lng: -97.0403, placeId: null, type: "transport", notes: "53m layover. Quick connection!" },
-      { id: 203, name: "AA 2899 → Sacramento", lat: 38.6953, lng: -121.5918, placeId: null, type: "flight", notes: "DFW → SMF. Depart 11:56am, arrive 1:37pm. Duration 3h 41m.", time: "11:56 AM" },
+      { id: 203, name: "AA 2899 → Sacramento", lat: 38.6953, lng: -121.5918, placeId: null, type: "flight", notes: "DFW → SMF. Depart 11:56am, arrive 1:37pm. Duration 3h 41m.", time: "11:56 AM", flightIata: "AA2899", flightDate: "2026-04-11" },
     ],
   },
 ];
