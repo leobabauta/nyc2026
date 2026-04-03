@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { markerColors } from "@/data/itinerary";
+import PhotoGallery from "./PhotoGallery";
 
 export default function StopCard({ stop, displayNum, isSelected, onSelect, emoji }) {
   const [details, setDetails] = useState(null);
@@ -143,6 +144,11 @@ export default function StopCard({ stop, displayNum, isSelected, onSelect, emoji
                 <p className="text-xs text-gray-400 dark:text-gray-500 italic">
                   No Place ID — details unavailable
                 </p>
+              )}
+
+              {/* Photos */}
+              {details?.photos?.length > 0 && (
+                <PhotoGallery photos={details.photos} />
               )}
 
               {/* Share / Copy link button */}

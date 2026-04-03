@@ -15,30 +15,35 @@ export async function GET(_request, { params }) {
     );
   }
 
-  const fields = "name,formatted_address,rating,user_ratings_total,opening_hours,website,formatted_phone_number,photos";
-  const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=${fields}&key=${key}`;
+  const url = `https://places.googleapis.com/v1/places/${placeId}?key=${key}`;
 
   try {
-    const res = await fetch(url, { next: { revalidate: 3600 } });
-    const data = await res.json();
+    const res = await fetch(url, {
+      headers: {
+        "X-Goog-FieldMask":
+          "displayName,formattedAddress,rating,userRatingCount,currentOpeningHours,websiteUri,nationalPhoneNumber,photos",
+      },
+      next: { revalidate: 3600 },
+    });
+    const r = await res.json();
 
-    if (data.status !== "OK") {
+    if (r.error) {
       return NextResponse.json(
-        { error: data.error_message || data.status },
+        { error: r.error.message || r.error.status },
         { status: 502 }
       );
     }
 
-    const r = data.result;
     return NextResponse.json({
-      name: r.name,
-      address: r.formatted_address,
+      name: r.displayName?.text,
+      address: r.formattedAddress,
       rating: r.rating,
-      totalRatings: r.user_ratings_total,
-      openNow: r.opening_hours?.open_now,
-      weekdayText: r.opening_hours?.weekday_text,
-      website: r.website,
-      phone: r.formatted_phone_number,
+      totalRatings: r.userRatingCount,
+      openNow: r.currentOpeningHours?.openNow,
+      weekdayText: r.currentOpeningHours?.weekdayDescriptions,
+      website: r.websiteUri,
+      phone: r.nationalPhoneNumber,
+      photos: (r.photos ?? []).slice(0, 6).map((p) => p.name),
     });
   } catch (err) {
     return NextResponse.json({ error: err.message }, { status: 500 });
