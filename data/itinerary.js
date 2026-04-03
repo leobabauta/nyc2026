@@ -108,6 +108,7 @@ export const days = [
       { id: 45, name: "abcV", lat: 40.738, lng: -73.9893, placeId: "ChIJxXrbJaJZwokRAAEnPk3AJh4", type: "food", notes: "Breakfast. Opens 8am. OR Candle (386 3rd Ave, opens 11am)." },
       { id: 46, name: "Candle", lat: 40.7419, lng: -73.9814, placeId: "ChIJn3v7DTNZwokRGmPnctINxp4", type: "food", notes: "Alternative to abcV. 386 3rd Ave. Opens 11am — better as brunch." },
       { id: 47, name: "Strand Book Store", lat: 40.7333, lng: -73.991, placeId: "ChIJnSKGEJlZwokRQIpiCvzKzV4", type: "books", notes: "If not done Day 3. Opens 10am." },
+      { id: 54, name: "Té Company", lat: 40.7284, lng: -73.9856, placeId: "ChIJ02UqP5RZwokR94y_zTN85qY", type: "food", notes: "Taiwanese tea shop. 314 E 9th St." },
       { id: 48, name: "Superiority Burger", lat: 40.7265, lng: -73.9835, placeId: "ChIJ26fKep1ZwokRrPzNIqBj4xU", type: "food", notes: "Lunch. 119 Ave A. Opens noon Fridays." },
       { id: 49, name: "Mast Books", lat: 40.7247, lng: -73.9843, placeId: "ChIJBXpzwIJZwokRhOAu4SUGDds", type: "books", notes: "72 Ave A. Beautifully curated art & photography books." },
       { id: 50, name: "Tompkins Sq Park", lat: 40.7272, lng: -73.9818, placeId: null, type: "park", notes: "Sit with your book. Site of annual Howl festival." },
