@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback, useState } from "react";
 import { markerColors } from "@/data/itinerary";
+import UserPhotoLightbox from "./UserPhotoLightbox";
 
 let mapsLoaded = false;
 let mapsLoadPromise = null;
@@ -64,11 +65,25 @@ function createMarkerIcon(color, isSelected) {
   };
 }
 
-export default function TripMap({ day, filteredStops, selectedStop, onSelectStop, isDark }) {
+function createCameraIcon() {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28">
+    <circle cx="14" cy="14" r="13" fill="#ec4899" stroke="white" stroke-width="2"/>
+    <text x="14" y="18" text-anchor="middle" font-size="14" fill="white">📷</text>
+  </svg>`;
+  return {
+    url: "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(svg),
+    scaledSize: new google.maps.Size(28, 28),
+    anchor: new google.maps.Point(14, 14),
+  };
+}
+
+export default function TripMap({ day, filteredStops, selectedStop, onSelectStop, isDark, userPhotos }) {
   const mapRef = useRef(null);
   const mapInstance = useRef(null);
   const markersRef = useRef([]);
+  const photoMarkersRef = useRef([]);
   const infoWindowRef = useRef(null);
+  const [photoLightbox, setPhotoLightbox] = useState(null); // index into geoPhotos
 
   // Initialize map
   useEffect(() => {
@@ -84,6 +99,7 @@ export default function TripMap({ day, filteredStops, selectedStop, onSelectStop
       });
       infoWindowRef.current = new google.maps.InfoWindow();
       updateMarkers();
+      updatePhotoMarkers();
     });
     return () => { cancelled = true; };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -97,11 +113,9 @@ export default function TripMap({ day, filteredStops, selectedStop, onSelectStop
   const updateMarkers = useCallback(() => {
     if (!mapInstance.current) return;
 
-    // Clear existing markers
     markersRef.current.forEach((m) => m.setMap(null));
     markersRef.current = [];
 
-    // Build a lookup: stop id -> 1-based index within this day
     const dayIndexMap = {};
     day.stops.forEach((s, i) => { dayIndexMap[s.id] = i + 1; });
 
@@ -131,13 +145,44 @@ export default function TripMap({ day, filteredStops, selectedStop, onSelectStop
     });
   }, [day, filteredStops, selectedStop, onSelectStop]);
 
-  // Update markers when day or selection changes
+  const geoPhotos = (userPhotos || []).filter((p) => p.lat && p.lng);
+
+  const updatePhotoMarkers = useCallback(() => {
+    if (!mapInstance.current) return;
+
+    photoMarkersRef.current.forEach((m) => m.setMap(null));
+    photoMarkersRef.current = [];
+
+    geoPhotos.forEach((photo, idx) => {
+      const marker = new google.maps.Marker({
+        position: { lat: photo.lat, lng: photo.lng },
+        map: mapInstance.current,
+        icon: createCameraIcon(),
+        title: photo.filename,
+        zIndex: 0,
+      });
+
+      marker.addListener("click", () => {
+        setPhotoLightbox(idx);
+      });
+
+      photoMarkersRef.current.push(marker);
+    });
+  }, [geoPhotos]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Update stop markers
   useEffect(() => {
     if (!mapInstance.current) return;
     mapInstance.current.setCenter(day.center);
     mapInstance.current.setZoom(day.zoom);
     updateMarkers();
   }, [day, filteredStops, selectedStop, updateMarkers]);
+
+  // Update photo markers
+  useEffect(() => {
+    if (!mapInstance.current) return;
+    updatePhotoMarkers();
+  }, [userPhotos, updatePhotoMarkers]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Show info window for selected stop
   useEffect(() => {
@@ -166,5 +211,19 @@ export default function TripMap({ day, filteredStops, selectedStop, onSelectStop
     mapInstance.current.panTo({ lat: stop.lat, lng: stop.lng });
   }, [selectedStop, day]);
 
-  return <div ref={mapRef} className="w-full h-full min-h-[400px]" />;
+  return (
+    <>
+      <div ref={mapRef} className="w-full h-full min-h-[400px]" />
+      {photoLightbox !== null && geoPhotos.length > 0 && (
+        <UserPhotoLightbox
+          photos={geoPhotos.map((p) => ({
+            src: p.fullSrc,
+            filename: p.filename,
+          }))}
+          initialIndex={photoLightbox}
+          onClose={() => setPhotoLightbox(null)}
+        />
+      )}
+    </>
+  );
 }

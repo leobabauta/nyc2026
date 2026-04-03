@@ -1,6 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import StopCard from "./StopCard";
+import PhotoUploadButton from "./PhotoUploadButton";
+import UserPhotoLightbox from "./UserPhotoLightbox";
+import PostcardModal from "./PostcardModal";
 import { markerColors } from "@/data/itinerary";
 
 function buildDirectionsUrl(stops) {
@@ -34,13 +38,19 @@ const filters = [
 
 export default function Sidebar({
   day,
+  dayIndex,
   filteredStops,
   selectedStop,
   onSelectStop,
   typeEmoji,
   activeFilter,
   onFilterChange,
+  userPhotos,
+  onPhotosAdded,
 }) {
+  const [lightboxIndex, setLightboxIndex] = useState(null);
+  const [showPostcard, setShowPostcard] = useState(false);
+
   // Build stop id -> 1-based day index
   const dayIndexMap = {};
   day.stops.forEach((s, i) => { dayIndexMap[s.id] = i + 1; });
@@ -56,17 +66,73 @@ export default function Sidebar({
         <p className="text-sm text-gray-700 dark:text-gray-300 mt-2 leading-relaxed">
           {day.narrative}
         </p>
-        {buildDirectionsUrl(day.stops) && (
-          <a
-            href={buildDirectionsUrl(day.stops)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 mt-2 px-3 py-1.5 rounded-lg bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition-colors"
-          >
-            🧭 Route this day
-          </a>
-        )}
+        <div className="flex flex-wrap items-center gap-2 mt-2">
+          {buildDirectionsUrl(day.stops) && (
+            <a
+              href={buildDirectionsUrl(day.stops)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition-colors"
+            >
+              🧭 Route this day
+            </a>
+          )}
+          <PhotoUploadButton dayIndex={dayIndex} onPhotosAdded={onPhotosAdded} />
+          {userPhotos.length > 0 && (
+            <button
+              onClick={() => setShowPostcard(true)}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-pink-600 text-white text-sm font-medium hover:bg-pink-700 transition-colors"
+            >
+              💌 Create postcard
+            </button>
+          )}
+        </div>
       </div>
+
+      {/* User photos strip */}
+      {userPhotos.length > 0 && (
+        <div>
+          <p className="text-xs text-gray-500 dark:text-gray-400 mb-1.5">
+            Your photos ({userPhotos.length})
+          </p>
+          <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-thin">
+            {userPhotos.map((photo, i) => (
+              <button
+                key={photo.id}
+                type="button"
+                onClick={() => setLightboxIndex(i)}
+                className="shrink-0 w-16 h-16 rounded-lg overflow-hidden bg-gray-200 dark:bg-gray-700 hover:ring-2 ring-amber-400 transition-all"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={photo.thumbSrc}
+                  alt={photo.filename}
+                  className="w-full h-full object-cover"
+                />
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {lightboxIndex !== null && (
+        <UserPhotoLightbox
+          photos={userPhotos.map((p) => ({
+            src: p.fullSrc,
+            filename: p.filename,
+          }))}
+          initialIndex={lightboxIndex}
+          onClose={() => setLightboxIndex(null)}
+        />
+      )}
+
+      {showPostcard && (
+        <PostcardModal
+          day={day}
+          userPhotos={userPhotos}
+          onClose={() => setShowPostcard(false)}
+        />
+      )}
 
       {/* Filter pills */}
       <div className="flex flex-wrap gap-1.5">

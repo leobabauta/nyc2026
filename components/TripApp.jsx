@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useCallback, useMemo, useEffect } from "react";
+import { useState, useCallback, useMemo, useEffect, useRef } from "react";
 import { days } from "@/data/itinerary";
+import { getPhotosByDay } from "@/lib/photoDB";
 import Sidebar from "./Sidebar";
 import TripMap from "./TripMap";
 import DarkModeToggle from "./DarkModeToggle";
@@ -28,9 +29,10 @@ function getInitialState() {
 export default function TripApp() {
   const [selectedDay, setSelectedDay] = useState(() => getInitialState().day);
   const [selectedStop, setSelectedStop] = useState(() => getInitialState().stop);
-
   const [activeFilter, setActiveFilter] = useState("all");
   const [isDark, setIsDark] = useState(true);
+  const [userPhotos, setUserPhotos] = useState([]);
+  const objectUrlsRef = useRef([]);
 
   useEffect(() => {
     setIsDark(document.documentElement.classList.contains("dark"));
@@ -46,6 +48,41 @@ export default function TripApp() {
   }, []);
 
   const day = days[selectedDay];
+
+  const loadPhotos = useCallback(async () => {
+    // Revoke old object URLs
+    objectUrlsRef.current.forEach((u) => URL.revokeObjectURL(u));
+    objectUrlsRef.current = [];
+
+    try {
+      const raw = await getPhotosByDay(selectedDay);
+      const mapped = raw.map((p) => {
+        const thumbSrc = p.thumbnail
+          ? URL.createObjectURL(p.thumbnail)
+          : URL.createObjectURL(p.blob);
+        const fullSrc = URL.createObjectURL(p.blob);
+        objectUrlsRef.current.push(thumbSrc, fullSrc);
+        return {
+          id: p.id,
+          lat: p.lat,
+          lng: p.lng,
+          thumbSrc,
+          fullSrc,
+          filename: p.filename,
+        };
+      });
+      setUserPhotos(mapped);
+    } catch {
+      setUserPhotos([]);
+    }
+  }, [selectedDay]);
+
+  useEffect(() => {
+    loadPhotos();
+    return () => {
+      objectUrlsRef.current.forEach((u) => URL.revokeObjectURL(u));
+    };
+  }, [loadPhotos]);
 
   const filteredStops = useMemo(
     () =>
@@ -114,6 +151,7 @@ export default function TripApp() {
             selectedStop={selectedStop}
             onSelectStop={handleSelectStop}
             isDark={isDark}
+            userPhotos={userPhotos}
           />
         </div>
 
@@ -121,12 +159,15 @@ export default function TripApp() {
         <div className="flex-1 md:flex-none md:w-[420px] md:order-1 overflow-y-auto scrollbar-thin bg-gray-50 dark:bg-[#0f172a]">
           <Sidebar
             day={day}
+            dayIndex={selectedDay}
             filteredStops={filteredStops}
             selectedStop={selectedStop}
             onSelectStop={handleSelectStop}
             typeEmoji={typeEmoji}
             activeFilter={activeFilter}
             onFilterChange={setActiveFilter}
+            userPhotos={userPhotos}
+            onPhotosAdded={loadPhotos}
           />
         </div>
       </main>
