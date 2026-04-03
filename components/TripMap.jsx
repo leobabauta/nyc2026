@@ -185,6 +185,9 @@ export default function TripMap({ day, filteredStops, selectedStop, onSelectStop
     updatePhotoMarkers();
   }, [userPhotos, updatePhotoMarkers]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // Cache for place details (photo names) per placeId
+  const placeCache = useRef({});
+
   // Show info window for selected stop
   useEffect(() => {
     if (!mapInstance.current || !infoWindowRef.current) return;
@@ -200,16 +203,44 @@ export default function TripMap({ day, filteredStops, selectedStop, onSelectStop
       return;
     }
 
-    infoWindowRef.current.setContent(
-      `<div style="color:#333;max-width:220px">
-        <strong>${stop.name}</strong>
-        <p style="margin:4px 0 0;font-size:13px">${stop.notes}</p>
-        ${stop.time ? `<p style="margin:4px 0 0;font-size:12px;color:#b45309">⏰ ${stop.time}</p>` : ""}
-      </div>`
-    );
-    infoWindowRef.current.setPosition({ lat: stop.lat, lng: stop.lng });
-    infoWindowRef.current.open(mapInstance.current);
-    mapInstance.current.panTo({ lat: stop.lat, lng: stop.lng });
+    const showInfoWindow = (photoHtml = "") => {
+      infoWindowRef.current.setContent(
+        `<div style="color:#333;max-width:260px">
+          ${photoHtml}
+          <div style="padding:${photoHtml ? '8px 4px 4px' : '0'}">
+            <strong>${stop.name}</strong>
+            <p style="margin:4px 0 0;font-size:13px">${stop.notes}</p>
+            ${stop.time ? `<p style="margin:4px 0 0;font-size:12px;color:#b45309">⏰ ${stop.time}</p>` : ""}
+          </div>
+        </div>`
+      );
+      infoWindowRef.current.setPosition({ lat: stop.lat, lng: stop.lng });
+      infoWindowRef.current.open(mapInstance.current);
+      mapInstance.current.panTo({ lat: stop.lat, lng: stop.lng });
+    };
+
+    if (stop.placeId && placeCache.current[stop.placeId]) {
+      const photos = placeCache.current[stop.placeId];
+      const photoHtml = photos.length > 0
+        ? `<img src="/api/photo?name=${encodeURIComponent(photos[0])}&maxWidth=400" style="width:100%;border-radius:8px;max-height:160px;object-fit:cover" alt="" />`
+        : "";
+      showInfoWindow(photoHtml);
+    } else if (stop.placeId) {
+      showInfoWindow(); // show without photo first
+      fetch(`/api/place/${stop.placeId}`)
+        .then((r) => r.json())
+        .then((d) => {
+          const photos = d.photos || [];
+          placeCache.current[stop.placeId] = photos;
+          if (photos.length > 0) {
+            const photoHtml = `<img src="/api/photo?name=${encodeURIComponent(photos[0])}&maxWidth=400" style="width:100%;border-radius:8px;max-height:160px;object-fit:cover" alt="" />`;
+            showInfoWindow(photoHtml);
+          }
+        })
+        .catch(() => {});
+    } else {
+      showInfoWindow();
+    }
   }, [selectedStop, day]);
 
   return (

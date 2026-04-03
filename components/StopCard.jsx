@@ -108,6 +108,11 @@ export default function StopCard({ stop, displayNum, isSelected, onSelect, emoji
           {/* Expanded details */}
           {isSelected && (
             <div className="mt-3 pt-3 border-t border-gray-200 dark:border-[#334155] space-y-1.5">
+              {/* Photo at top */}
+              {details?.photos?.length > 0 && (
+                <PhotoGallery photos={details.photos} />
+              )}
+
               {loading && (
                 <p className="text-xs text-gray-400 dark:text-gray-500 animate-pulse">
                   Loading details...
@@ -185,11 +190,6 @@ export default function StopCard({ stop, displayNum, isSelected, onSelect, emoji
                 <p className="text-xs text-gray-400 dark:text-gray-500 italic">
                   ✈️ Flight status available starting the day before departure
                 </p>
-              )}
-
-              {/* Photos */}
-              {details?.photos?.length > 0 && (
-                <PhotoGallery photos={details.photos} />
               )}
 
               {/* Share / Copy link button */}
