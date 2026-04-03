@@ -14,6 +14,9 @@ const typeEmoji = {
   museum: "🏛️",
   park: "🌿",
   shopping: "🛍️",
+  flight: "✈️",
+  hotel: "🏨",
+  transport: "🚕",
 };
 
 function getInitialState() {
@@ -21,7 +24,7 @@ function getInitialState() {
   const params = new URLSearchParams(window.location.search);
   const dayParam = parseInt(params.get("day"), 10);
   const stopParam = parseInt(params.get("stop"), 10);
-  const dayIndex = dayParam >= 1 && dayParam <= 6 ? dayParam - 1 : 0;
+  const dayIndex = !isNaN(dayParam) && dayParam >= 0 && dayParam < days.length ? dayParam : 1;
   const stop = stopParam && days[dayIndex]?.stops.some((s) => s.id === stopParam) ? stopParam : null;
   return { day: dayIndex, stop };
 }
@@ -95,7 +98,7 @@ export default function TripApp() {
   // Update URL when day or stop changes
   useEffect(() => {
     const params = new URLSearchParams();
-    params.set("day", String(selectedDay + 1));
+    params.set("day", String(selectedDay));
     if (selectedStop) params.set("stop", String(selectedStop));
     const url = `${window.location.pathname}?${params.toString()}`;
     window.history.replaceState(null, "", url);
@@ -128,8 +131,12 @@ export default function TripApp() {
               }}
               className={`shrink-0 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                 i === selectedDay
-                  ? "bg-amber-500 text-white dark:text-gray-950"
-                  : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+                  ? d.travel
+                    ? "bg-slate-500 text-white"
+                    : "bg-amber-500 text-white dark:text-gray-950"
+                  : d.travel
+                    ? "bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-600"
+                    : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
               }`}
             >
               {d.label}

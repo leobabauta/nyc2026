@@ -1,10 +1,28 @@
 export const days = [
   {
+    label: "Day 0",
+    date: "Saturday Apr 4",
+    title: "Sacramento → New York",
+    travel: true,
+    narrative:
+      "Travel day! Fly out of Sacramento with a layover in Phoenix, arriving at JFK late evening. Taxi or subway to the hotel in Midtown.",
+    center: { lat: 40.749, lng: -73.976 },
+    zoom: 12,
+    stops: [
+      { id: 100, name: "SMF Sacramento Airport", lat: 38.6953, lng: -121.5918, placeId: null, type: "flight", notes: "AA 1625 → Phoenix. Depart 10:07am. Duration 1h 51m.", time: "10:07 AM" },
+      { id: 101, name: "PHX Phoenix Layover", lat: 33.4373, lng: -112.0078, placeId: null, type: "transport", notes: "3h 17m layover. Arrive 11:58am, depart 3:15pm." },
+      { id: 102, name: "AA 2315 → JFK", lat: 40.6413, lng: -73.7781, placeId: null, type: "flight", notes: "PHX → JFK. Depart 3:15pm, arrive 10:59pm. Duration 4h 44m.", time: "3:15 PM" },
+      { id: 103, name: "JFK → Hotel (Taxi/Subway)", lat: 40.6413, lng: -73.7781, placeId: null, type: "transport", notes: "JFK to Midtown. Taxi ~$70 flat rate + tolls, or AirTrain + subway ~$10." },
+      { id: 104, name: "Courtyard by Marriott", lat: 40.7524, lng: -73.9791, placeId: null, type: "hotel", notes: "3 East 40th St, Manhattan. Check-in 3pm. Conf# 82465339. Phone: +1 212 447 1500." },
+    ],
+  },
+  {
     label: "Day 1",
     date: "Sunday Apr 5",
     title: "SoHo → LES → Midtown",
     narrative:
       "Start with a late breakfast at Cloudy Donut, browse books at McNally Jackson, then head to your tattoo appointment. Explore the New Museum and the Lower East Side before your evening omakase.",
+    hotel: "Courtyard by Marriott — 3 East 40th St",
     center: { lat: 40.726, lng: -73.997 },
     zoom: 14,
     stops: [
@@ -24,6 +42,7 @@ export const days = [
     title: "UWS → High Line → West Village",
     narrative:
       "Head uptown for the Natural History Museum, then wind down through Chelsea Market and the High Line. End the day exploring West Village bookshops and dinner at Anixi.",
+    hotel: "Courtyard by Marriott — 3 East 40th St",
     center: { lat: 40.748, lng: -74.002 },
     zoom: 13,
     stops: [
@@ -42,13 +61,14 @@ export const days = [
     title: "The Met & Flatiron",
     narrative:
       "Brunch at UT47, then spend the morning at The Met. Walk through Central Park, return to the hotel for a 2pm call, then explore Flatiron bookstores and dinner at Coletta.",
+    hotel: "Courtyard by Marriott — 3 East 40th St",
     center: { lat: 40.758, lng: -73.978 },
     zoom: 13,
     stops: [
       { id: 18, name: "UT47 Kitchen & Bar", lat: 40.7618, lng: -73.9904, placeId: "ChIJYWlTWVFYwokRVffxIe_Erc4", type: "food", notes: "Brunch. Korean-inspired all-vegan. Opens 8am." },
       { id: 19, name: "Metropolitan Museum of Art", lat: 40.7794, lng: -73.9632, placeId: "ChIJb8Jg9pZYwokR-qHGtvSkLzs", type: "museum", notes: "Opens 10am Tues. Allow 2+ hrs." },
       { id: 20, name: "Central Park—Belvedere", lat: 40.7797, lng: -73.9691, placeId: null, type: "park", notes: "Walk: Belvedere → Bethesda Terrace → Bow Bridge → Strawberry Fields." },
-      { id: 21, name: "Courtyard by Marriott", lat: 40.7557, lng: -73.9694, placeId: null, type: "anchor", notes: "866 3rd Ave. Back to hotel for the 2pm call.", time: "2:00 PM" },
+      { id: 21, name: "Courtyard by Marriott", lat: 40.7524, lng: -73.9791, placeId: null, type: "anchor", notes: "3 East 40th St. Back to hotel for the 2pm call.", time: "2:00 PM" },
       { id: 22, name: "Franchia Vegan Café", lat: 40.7476, lng: -73.9813, placeId: "ChIJwwO-oAdZwokRQ4RYQeCkjF4", type: "food", notes: "Lunch after call. Korean vegan. OR PLANTA (15 W 27th)." },
       { id: 23, name: "PLANTA New York", lat: 40.7445, lng: -73.9883, placeId: "ChIJj_rijkZZwokRpTRkbMwBRXk", type: "food", notes: "Alternative to Franchia. Vegan Asian fusion, Flatiron." },
       { id: 24, name: "Rizzoli Bookstore", lat: 40.7436, lng: -73.9892, placeId: "ChIJg3UvcfpYwokRDr3VC4a_dt0", type: "books", notes: "One of the most beautiful bookstores in NYC." },
@@ -63,6 +83,7 @@ export const days = [
     title: "MoMA & Maybe Happy Ending",
     narrative:
       "Grab a doughnut at Doughnut Plant, then spend the morning at MoMA. Catch the matinee of Maybe Happy Ending, visit the NYPL reading room, and wrap up with dinner at Hangawi.",
+    hotel: "Courtyard by Marriott — 3 East 40th St",
     center: { lat: 40.757, lng: -73.982 },
     zoom: 14,
     stops: [
@@ -80,6 +101,7 @@ export const days = [
     title: "Brooklyn",
     narrative:
       "A full day in Brooklyn — legendary vegan BEC, a feminist bookstore, and a marathon tour of indie bookshops from Prospect Heights to Williamsburg. End with dinner at Reverie.",
+    hotel: "Courtyard by Marriott — 3 East 40th St",
     center: { lat: 40.693, lng: -73.97 },
     zoom: 12,
     stops: [
@@ -99,9 +121,10 @@ export const days = [
   {
     label: "Day 6",
     date: "Friday Apr 10",
-    title: "East Village & Union Square",
+    title: "East Village → Newark",
     narrative:
-      "Final day — breakfast at abcV, last bookstore visits, lunch at Superiority Burger, and a leisurely afternoon in Tompkins Square Park. Close the trip with dinner at Avant Garden.",
+      "Final exploring day — breakfast at abcV, last bookstore visits, lunch at Superiority Burger, and a leisurely afternoon in Tompkins Square Park. Dinner at Avant Garden, then head to the Newark airport hotel for tomorrow's early flight.",
+    hotel: "Check out Courtyard by Marriott (11am) → Check in Fairfield Inn Newark (3pm)",
     center: { lat: 40.731, lng: -73.989 },
     zoom: 14,
     stops: [
@@ -115,6 +138,24 @@ export const days = [
       { id: 51, name: "Avant Garden", lat: 40.7257, lng: -73.9841, placeId: "ChIJhesNT51ZwokRqIACbMxk2BQ", type: "food", notes: "Dinner. 95 Ave A. Opens 5pm." },
       { id: 53, name: "The Immigrant", lat: 40.7267, lng: -73.9847, placeId: "ChIJD3akTZ1ZwokRN6BKz0AAORU", type: "food", notes: "Cozy East Village bar. Great cocktails and vibe. Opens 5pm." },
       { id: 52, name: "Ladybird", lat: 40.7267, lng: -73.9845, placeId: "ChIJdWfZe5FZwokR8k6hhjU5uQo", type: "food", notes: "Cocktails after dinner. 111 E 7th, around the corner." },
+      { id: 55, name: "Manhattan → Newark", lat: 40.7128, lng: -74.0060, placeId: null, type: "transport", notes: "NJ Transit or taxi to Newark. Penn Station → Newark Penn ~25 min." },
+      { id: 56, name: "Fairfield Inn Newark Airport", lat: 40.6977, lng: -74.1744, placeId: null, type: "hotel", notes: "618 US Hwy 1 & 9 S, Newark NJ. Check-in 3pm. Conf# 97560507. Phone: +1 973 242 2600." },
+    ],
+  },
+  {
+    label: "Day 7",
+    date: "Saturday Apr 11",
+    title: "New York → Sacramento",
+    travel: true,
+    narrative:
+      "Fly home! Shuttle to Newark airport for the morning flight via Dallas, arriving back in Sacramento early afternoon.",
+    center: { lat: 40.690, lng: -74.175 },
+    zoom: 11,
+    stops: [
+      { id: 200, name: "Fairfield Inn → EWR", lat: 40.6977, lng: -74.1744, placeId: null, type: "transport", notes: "Hotel shuttle to Newark Liberty airport. Check-out 12pm but leave early!", time: "6:30 AM" },
+      { id: 201, name: "EWR Newark Airport", lat: 40.6895, lng: -74.1745, placeId: null, type: "flight", notes: "AA 1303 → Dallas. Depart 8:00am, arrive 11:03am. Duration 4h 3m.", time: "8:00 AM" },
+      { id: 202, name: "DFW Dallas Layover", lat: 32.8998, lng: -97.0403, placeId: null, type: "transport", notes: "53m layover. Quick connection!" },
+      { id: 203, name: "AA 2899 → Sacramento", lat: 38.6953, lng: -121.5918, placeId: null, type: "flight", notes: "DFW → SMF. Depart 11:56am, arrive 1:37pm. Duration 3h 41m.", time: "11:56 AM" },
     ],
   },
 ];
@@ -126,4 +167,7 @@ export const markerColors = {
   museum: "#8b5cf6",
   park: "#22c55e",
   shopping: "#f97316",
+  flight: "#ef4444",
+  hotel: "#6366f1",
+  transport: "#64748b",
 };

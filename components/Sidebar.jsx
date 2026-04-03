@@ -34,6 +34,9 @@ const filters = [
   { key: "park", label: "Park", color: markerColors.park },
   { key: "shopping", label: "Shopping", color: markerColors.shopping },
   { key: "anchor", label: "Booked", color: markerColors.anchor },
+  { key: "flight", label: "Flight", color: markerColors.flight },
+  { key: "hotel", label: "Hotel", color: markerColors.hotel },
+  { key: "transport", label: "Transport", color: markerColors.transport },
 ];
 
 export default function Sidebar({
@@ -66,6 +69,11 @@ export default function Sidebar({
         <p className="text-sm text-gray-700 dark:text-gray-300 mt-2 leading-relaxed">
           {day.narrative}
         </p>
+        {day.hotel && (
+          <p className="text-xs text-indigo-600 dark:text-indigo-400 mt-1.5 flex items-center gap-1">
+            🏨 {day.hotel}
+          </p>
+        )}
         <div className="flex flex-wrap items-center gap-2 mt-2">
           {buildDirectionsUrl(day.stops) && (
             <a
@@ -134,9 +142,9 @@ export default function Sidebar({
         />
       )}
 
-      {/* Filter pills */}
+      {/* Filter pills — only show types that exist in this day */}
       <div className="flex flex-wrap gap-1.5">
-        {filters.map((f) => {
+        {filters.filter((f) => f.key === "all" || day.stops.some((s) => s.type === f.key)).map((f) => {
           const isActive = activeFilter === f.key;
           return (
             <button

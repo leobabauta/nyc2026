@@ -137,7 +137,7 @@ export default function PrintPage() {
       </button>
 
       <h1>Eva &amp; Leo&apos;s NYC 2026 Trip</h1>
-      <p className="subtitle">April 5 &ndash; 10, 2026 &middot; 6 days &middot; 52 stops</p>
+      <p className="subtitle">April 4 &ndash; 11, 2026 &middot; 8 days (incl. travel) &middot; {days.reduce((n, d) => n + d.stops.length, 0)} stops</p>
 
       {days.map((day, di) => (
         <section key={di} className="day-section">
