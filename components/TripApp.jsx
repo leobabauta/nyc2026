@@ -28,7 +28,7 @@ function getInitialState() {
 export default function TripApp() {
   const [selectedDay, setSelectedDay] = useState(() => getInitialState().day);
   const [selectedStop, setSelectedStop] = useState(() => getInitialState().stop);
-  const [mobileView, setMobileView] = useState("list");
+
   const [activeFilter, setActiveFilter] = useState("all");
   const [isDark, setIsDark] = useState(true);
 
@@ -76,16 +76,7 @@ export default function TripApp() {
           <h1 className="text-xl font-bold tracking-tight">
             <span className="text-amber-500 dark:text-amber-400">Eva &amp; Leo&apos;s</span> NYC 2026 Trip
           </h1>
-          <div className="flex items-center gap-2">
-            <DarkModeToggle isDark={isDark} onToggle={toggleDark} />
-            {/* Mobile toggle */}
-            <button
-              onClick={() => setMobileView((v) => (v === "list" ? "map" : "list"))}
-              className="md:hidden px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-gray-800 text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-            >
-              {mobileView === "list" ? "🗺️ Map" : "📋 List"}
-            </button>
-          </div>
+          <DarkModeToggle isDark={isDark} onToggle={toggleDark} />
         </div>
 
         {/* Day tabs */}
@@ -114,13 +105,20 @@ export default function TripApp() {
       </header>
 
       {/* Main content */}
-      <main className="flex flex-1 overflow-hidden">
-        {/* Sidebar */}
-        <div
-          className={`w-full md:w-[420px] md:shrink-0 md:block overflow-y-auto scrollbar-thin bg-gray-50 dark:bg-[#0f172a] ${
-            mobileView === "list" ? "block" : "hidden"
-          }`}
-        >
+      <main className="flex flex-col md:flex-row flex-1 overflow-hidden">
+        {/* Map — top half on mobile, right panel on desktop */}
+        <div className="h-[50vh] shrink-0 md:h-auto md:flex-1 md:order-2">
+          <TripMap
+            day={day}
+            filteredStops={filteredStops}
+            selectedStop={selectedStop}
+            onSelectStop={handleSelectStop}
+            isDark={isDark}
+          />
+        </div>
+
+        {/* Sidebar — bottom half on mobile, left panel on desktop */}
+        <div className="flex-1 md:flex-none md:w-[420px] md:order-1 overflow-y-auto scrollbar-thin bg-gray-50 dark:bg-[#0f172a]">
           <Sidebar
             day={day}
             filteredStops={filteredStops}
@@ -129,21 +127,6 @@ export default function TripApp() {
             typeEmoji={typeEmoji}
             activeFilter={activeFilter}
             onFilterChange={setActiveFilter}
-          />
-        </div>
-
-        {/* Map */}
-        <div
-          className={`flex-1 md:block ${
-            mobileView === "map" ? "block" : "hidden"
-          }`}
-        >
-          <TripMap
-            day={day}
-            filteredStops={filteredStops}
-            selectedStop={selectedStop}
-            onSelectStop={handleSelectStop}
-            isDark={isDark}
           />
         </div>
       </main>
