@@ -186,11 +186,6 @@ export default function StopCard({ stop, displayNum, isSelected, onSelect, emoji
                   )}
                 </div>
               )}
-              {stop.flightIata && !flightStatus && isSelected && (
-                <p className="text-xs text-gray-400 dark:text-gray-500 italic">
-                  ✈️ Flight status available starting the day before departure
-                </p>
-              )}
 
               {/* Share / Copy link button */}
               <div className="pt-1.5 relative">

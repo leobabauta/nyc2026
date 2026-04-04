@@ -203,11 +203,28 @@ export default function TripMap({ day, filteredStops, selectedStop, onSelectStop
       return;
     }
 
-    const showInfoWindow = (photoHtml = "") => {
+    const buildPhotoCarousel = (photos) => {
+      if (!photos || photos.length === 0) return "";
+      const urls = photos.map((n) => `/api/photo?name=${encodeURIComponent(n)}&maxWidth=400`);
+      const id = "iw-carousel-" + stop.id;
+      const btnStyle = "position:absolute;top:50%;transform:translateY(-50%);width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,0.5);color:#fff;border:none;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;";
+      const counterStyle = "position:absolute;bottom:6px;right:8px;font-size:10px;background:rgba(0,0,0,0.5);color:#fff;padding:1px 6px;border-radius:4px;";
+      return `
+        <div id="${id}" style="position:relative;width:100%;border-radius:8px;overflow:hidden;aspect-ratio:16/10;background:#e5e7eb">
+          <img id="${id}-img" src="${urls[0]}" style="width:100%;height:100%;object-fit:cover" alt="" />
+          ${photos.length > 1 ? `
+            <button onclick="(function(){var d=document.getElementById('${id}');var c=+(d.dataset.idx||0);c=(c-1+${urls.length})%${urls.length};d.dataset.idx=c;document.getElementById('${id}-img').src=${JSON.stringify(urls)}[c];document.getElementById('${id}-ctr').textContent=(c+1)+'/${urls.length}'})()" style="${btnStyle}left:6px" aria-label="Previous">‹</button>
+            <button onclick="(function(){var d=document.getElementById('${id}');var c=+(d.dataset.idx||0);c=(c+1)%${urls.length};d.dataset.idx=c;document.getElementById('${id}-img').src=${JSON.stringify(urls)}[c];document.getElementById('${id}-ctr').textContent=(c+1)+'/${urls.length}'})()" style="${btnStyle}right:6px" aria-label="Next">›</button>
+            <span id="${id}-ctr" style="${counterStyle}">1/${urls.length}</span>
+          ` : ""}
+        </div>`;
+    };
+
+    const showInfoWindow = (photos = []) => {
       infoWindowRef.current.setContent(
         `<div style="color:#333;max-width:260px">
-          ${photoHtml}
-          <div style="padding:${photoHtml ? '8px 4px 4px' : '0'}">
+          ${buildPhotoCarousel(photos)}
+          <div style="padding:${photos.length ? '8px 4px 4px' : '0'}">
             <strong>${stop.name}</strong>
             <p style="margin:4px 0 0;font-size:13px">${stop.notes}</p>
             ${stop.time ? `<p style="margin:4px 0 0;font-size:12px;color:#b45309">⏰ ${stop.time}</p>` : ""}
@@ -220,22 +237,15 @@ export default function TripMap({ day, filteredStops, selectedStop, onSelectStop
     };
 
     if (stop.placeId && placeCache.current[stop.placeId]) {
-      const photos = placeCache.current[stop.placeId];
-      const photoHtml = photos.length > 0
-        ? `<img src="/api/photo?name=${encodeURIComponent(photos[0])}&maxWidth=400" style="width:100%;border-radius:8px;max-height:160px;object-fit:cover" alt="" />`
-        : "";
-      showInfoWindow(photoHtml);
+      showInfoWindow(placeCache.current[stop.placeId]);
     } else if (stop.placeId) {
-      showInfoWindow(); // show without photo first
+      showInfoWindow();
       fetch(`/api/place/${stop.placeId}`)
         .then((r) => r.json())
         .then((d) => {
           const photos = d.photos || [];
           placeCache.current[stop.placeId] = photos;
-          if (photos.length > 0) {
-            const photoHtml = `<img src="/api/photo?name=${encodeURIComponent(photos[0])}&maxWidth=400" style="width:100%;border-radius:8px;max-height:160px;object-fit:cover" alt="" />`;
-            showInfoWindow(photoHtml);
-          }
+          if (photos.length > 0) showInfoWindow(photos);
         })
         .catch(() => {});
     } else {
