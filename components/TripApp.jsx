@@ -74,9 +74,11 @@ export default function TripApp() {
     objectUrlsRef.current.forEach((u) => URL.revokeObjectURL(u));
     objectUrlsRef.current = [];
 
+    // Local photos from IndexedDB
+    let localPhotos = [];
     try {
       const raw = await getPhotosByDay(selectedDay);
-      const mapped = raw.map((p) => {
+      localPhotos = raw.map((p) => {
         const thumbSrc = p.thumbnail
           ? URL.createObjectURL(p.thumbnail)
           : URL.createObjectURL(p.blob);
@@ -91,11 +93,22 @@ export default function TripApp() {
           filename: p.filename,
         };
       });
-      setUserPhotos(mapped);
-    } catch {
-      setUserPhotos([]);
-    }
-  }, [selectedDay]);
+    } catch {}
+
+    // Synced photos from other devices (Vercel Blob URLs)
+    const synced = (syncState.syncedPhotos?.[selectedDay] || [])
+      .filter((sp) => !localPhotos.some((lp) => lp.filename === sp.filename))
+      .map((sp) => ({
+        id: `synced-${sp.timestamp}`,
+        lat: sp.lat,
+        lng: sp.lng,
+        thumbSrc: sp.url,
+        fullSrc: sp.url,
+        filename: sp.filename,
+      }));
+
+    setUserPhotos([...localPhotos, ...synced]);
+  }, [selectedDay, syncState.syncedPhotos]);
 
   useEffect(() => {
     loadPhotos();

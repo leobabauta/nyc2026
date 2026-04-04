@@ -112,7 +112,7 @@ export default function Sidebar({
               🧭 Route this day
             </a>
           )}
-          <PhotoUploadButton dayIndex={dayIndex} onPhotosAdded={onPhotosAdded} />
+          <PhotoUploadButton dayIndex={dayIndex} onPhotosAdded={onPhotosAdded} syncState={syncState} />
           {userPhotos.length > 0 && (
             <button
               onClick={() => setShowPostcard(true)}

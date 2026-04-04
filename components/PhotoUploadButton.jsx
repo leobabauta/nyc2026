@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { addPhoto } from "@/lib/photoDB";
 
-export default function PhotoUploadButton({ dayIndex, onPhotosAdded }) {
+export default function PhotoUploadButton({ dayIndex, onPhotosAdded, syncState }) {
   const inputRef = useRef(null);
   const [uploading, setUploading] = useState(false);
 
@@ -13,7 +13,6 @@ export default function PhotoUploadButton({ dayIndex, onPhotosAdded }) {
 
     setUploading(true);
     try {
-      // Dynamic import to keep bundle small for non-upload paths
       const exifr = (await import("exifr")).default;
 
       for (const file of files) {
@@ -21,9 +20,34 @@ export default function PhotoUploadButton({ dayIndex, onPhotosAdded }) {
         try {
           gps = await exifr.gps(file);
         } catch {
-          // No GPS data — that's fine
+          // No GPS data
         }
+
+        // Save to local IndexedDB
         await addPhoto(dayIndex, file, gps);
+
+        // Upload to Vercel Blob for syncing
+        try {
+          const formData = new FormData();
+          formData.append("file", file);
+          formData.append("dayIndex", String(dayIndex));
+          if (gps?.latitude) formData.append("lat", String(gps.latitude));
+          if (gps?.longitude) formData.append("lng", String(gps.longitude));
+
+          const res = await fetch("/api/photos", { method: "POST", body: formData });
+          const data = await res.json();
+          if (data.url) {
+            syncState?.addSyncedPhoto(dayIndex, {
+              url: data.url,
+              lat: data.lat,
+              lng: data.lng,
+              filename: data.filename,
+              timestamp: Date.now(),
+            });
+          }
+        } catch {
+          // Blob upload failed — local copy still works
+        }
       }
       onPhotosAdded();
     } catch (err) {
