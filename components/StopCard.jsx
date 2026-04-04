@@ -9,8 +9,33 @@ export default function StopCard({ stop, displayNum, isSelected, onSelect, emoji
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
   const [flightStatus, setFlightStatus] = useState(null);
+  const [checked, setChecked] = useState(false);
   const cardRef = useRef(null);
   const color = markerColors[stop.type] || "#888";
+
+  // Load checked state from localStorage
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem("checkedStops");
+      if (stored) {
+        const set = JSON.parse(stored);
+        setChecked(set.includes(stop.id));
+      }
+    } catch {}
+  }, [stop.id]);
+
+  const toggleChecked = (e) => {
+    e.stopPropagation();
+    setChecked((prev) => {
+      const next = !prev;
+      try {
+        const stored = JSON.parse(localStorage.getItem("checkedStops") || "[]");
+        const updated = next ? [...stored, stop.id] : stored.filter((id) => id !== stop.id);
+        localStorage.setItem("checkedStops", JSON.stringify(updated));
+      } catch {}
+      return next;
+    });
+  };
 
   useEffect(() => {
     if (!isSelected || !stop.placeId || details) return;
@@ -217,6 +242,24 @@ export default function StopCard({ stop, displayNum, isSelected, onSelect, emoji
             </div>
           )}
         </div>
+
+        {/* Check circle */}
+        <button
+          type="button"
+          onClick={toggleChecked}
+          className={`shrink-0 w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors mt-1 ${
+            checked
+              ? "bg-green-500 border-green-500 text-white"
+              : "border-gray-300 dark:border-gray-600 hover:border-green-400"
+          }`}
+          aria-label={checked ? "Mark as not done" : "Mark as done"}
+        >
+          {checked && (
+            <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="2,6 5,9 10,3" />
+            </svg>
+          )}
+        </button>
       </div>
     </button>
   );
