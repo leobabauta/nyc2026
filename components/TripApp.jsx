@@ -173,6 +173,7 @@ export default function TripApp() {
             onSelectStop={handleSelectStop}
             isDark={isDark}
             userPhotos={userPhotos}
+            customStops={syncState.customStops?.[selectedDay] || []}
           />
         </div>
 

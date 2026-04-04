@@ -77,10 +77,23 @@ function createCameraIcon() {
   };
 }
 
-export default function TripMap({ day, filteredStops, selectedStop, onSelectStop, isDark, userPhotos }) {
+function createCustomStopIcon() {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28">
+    <circle cx="14" cy="14" r="13" fill="#f59e0b" stroke="white" stroke-width="2"/>
+    <text x="14" y="19" text-anchor="middle" font-size="16" fill="white">+</text>
+  </svg>`;
+  return {
+    url: "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(svg),
+    scaledSize: new google.maps.Size(28, 28),
+    anchor: new google.maps.Point(14, 14),
+  };
+}
+
+export default function TripMap({ day, filteredStops, selectedStop, onSelectStop, isDark, userPhotos, customStops }) {
   const mapRef = useRef(null);
   const mapInstance = useRef(null);
   const markersRef = useRef([]);
+  const customMarkersRef = useRef([]);
   const photoMarkersRef = useRef([]);
   const infoWindowRef = useRef(null);
   const [photoLightbox, setPhotoLightbox] = useState(null); // index into geoPhotos
@@ -101,6 +114,7 @@ export default function TripMap({ day, filteredStops, selectedStop, onSelectStop
       infoWindowRef.current = new google.maps.InfoWindow();
       updateMarkers();
       updatePhotoMarkers();
+      updateCustomMarkers();
     });
     return () => { cancelled = true; };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -184,6 +198,42 @@ export default function TripMap({ day, filteredStops, selectedStop, onSelectStop
     if (!mapInstance.current) return;
     updatePhotoMarkers();
   }, [userPhotos, updatePhotoMarkers]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const updateCustomMarkers = useCallback(() => {
+    if (!mapInstance.current) return;
+
+    customMarkersRef.current.forEach((m) => m.setMap(null));
+    customMarkersRef.current = [];
+
+    (customStops || []).filter((s) => s.lat && s.lng).forEach((cs) => {
+      const marker = new google.maps.Marker({
+        position: { lat: cs.lat, lng: cs.lng },
+        map: mapInstance.current,
+        icon: createCustomStopIcon(),
+        title: cs.name,
+        zIndex: 2,
+      });
+
+      marker.addListener("click", () => {
+        infoWindowRef.current.setContent(
+          `<div style="color:#333;max-width:220px">
+            <strong>${cs.name}</strong>
+            ${cs.location ? `<p style="margin:4px 0 0;font-size:12px;color:#666">📍 ${cs.location}</p>` : ""}
+          </div>`
+        );
+        infoWindowRef.current.setPosition({ lat: cs.lat, lng: cs.lng });
+        infoWindowRef.current.open(mapInstance.current);
+      });
+
+      customMarkersRef.current.push(marker);
+    });
+  }, [customStops]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Update custom stop markers
+  useEffect(() => {
+    if (!mapInstance.current) return;
+    updateCustomMarkers();
+  }, [customStops, updateCustomMarkers]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Cache for place details (photo names) per placeId
   const placeCache = useRef({});

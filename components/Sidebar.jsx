@@ -59,6 +59,18 @@ export default function Sidebar({
   const [newStopName, setNewStopName] = useState("");
   const [newStopLocation, setNewStopLocation] = useState("");
 
+  const addAndGeocode = (name, location) => {
+    const id = syncState?.addCustomStop(dayIndex, name, location);
+    if (location && id) {
+      fetch(`/api/geocode?address=${encodeURIComponent(location)}`)
+        .then((r) => r.json())
+        .then((d) => {
+          if (d.lat) syncState?.updateCustomStop(dayIndex, id, { lat: d.lat, lng: d.lng });
+        })
+        .catch(() => {});
+    }
+  };
+
   // Build stop id -> 1-based day index
   const dayIndexMap = {};
   day.stops.forEach((s, i) => { dayIndexMap[s.id] = i + 1; });
@@ -225,6 +237,17 @@ export default function Sidebar({
                   type="text"
                   value={cs.location || ""}
                   onChange={(e) => syncState?.updateCustomStop(dayIndex, cs.id, { location: e.target.value })}
+                  onBlur={(e) => {
+                    const addr = e.target.value.trim();
+                    if (addr) {
+                      fetch(`/api/geocode?address=${encodeURIComponent(addr)}`)
+                        .then((r) => r.json())
+                        .then((d) => {
+                          if (d.lat) syncState?.updateCustomStop(dayIndex, cs.id, { lat: d.lat, lng: d.lng });
+                        })
+                        .catch(() => {});
+                    }
+                  }}
                   onKeyDown={(e) => e.stopPropagation()}
                   onKeyUp={(e) => e.stopPropagation()}
                   placeholder="Location / address..."
@@ -300,7 +323,7 @@ export default function Sidebar({
               onChange={(e) => setNewStopName(e.target.value)}
               onKeyDown={(e) => {
                 if (e.key === "Enter" && newStopName.trim()) {
-                  syncState?.addCustomStop(dayIndex, newStopName.trim(), newStopLocation.trim());
+                  addAndGeocode(newStopName.trim(), newStopLocation.trim());
                   setNewStopName("");
                   setNewStopLocation("");
                   setAddingStop(false);
@@ -316,7 +339,7 @@ export default function Sidebar({
               onChange={(e) => setNewStopLocation(e.target.value)}
               onKeyDown={(e) => {
                 if (e.key === "Enter" && newStopName.trim()) {
-                  syncState?.addCustomStop(dayIndex, newStopName.trim(), newStopLocation.trim());
+                  addAndGeocode(newStopName.trim(), newStopLocation.trim());
                   setNewStopName("");
                   setNewStopLocation("");
                   setAddingStop(false);
@@ -329,7 +352,7 @@ export default function Sidebar({
               <button
                 onClick={() => {
                   if (newStopName.trim()) {
-                    syncState?.addCustomStop(dayIndex, newStopName.trim(), newStopLocation.trim());
+                    addAndGeocode(newStopName.trim(), newStopLocation.trim());
                     setNewStopName("");
                     setNewStopLocation("");
                   }
