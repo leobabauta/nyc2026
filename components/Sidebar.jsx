@@ -273,16 +273,14 @@ export default function Sidebar({
                 <div className="flex items-center gap-2 pt-0.5">
                   <button
                     onClick={() => syncState?.moveCustomStop(dayIndex, cs.id, -1)}
-                    disabled={csIdx === 0}
-                    className="text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 disabled:opacity-30"
+                    className={`text-xs hover:text-gray-600 dark:hover:text-gray-200 ${csIdx === 0 ? "text-gray-200 dark:text-gray-700" : "text-gray-400"}`}
                     title="Move up"
                   >
                     ▲
                   </button>
                   <button
                     onClick={() => syncState?.moveCustomStop(dayIndex, cs.id, 1)}
-                    disabled={csIdx === csArr.length - 1}
-                    className="text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 disabled:opacity-30"
+                    className={`text-xs hover:text-gray-600 dark:hover:text-gray-200 ${csIdx === csArr.length - 1 ? "text-gray-200 dark:text-gray-700" : "text-gray-400"}`}
                     title="Move down"
                   >
                     ▼
