@@ -14,23 +14,26 @@ export async function GET(request) {
     return NextResponse.json({ error: "No flight API key configured" }, { status: 501 });
   }
 
-  const url = `http://api.aviationstack.com/v1/flights?access_key=${key}&flight_iata=${flightIata}&flight_date=${flightDate}`;
+  // Free tier doesn't support flight_date param, so we fetch by flight number
+  // and filter results by date ourselves
+  const url = `http://api.aviationstack.com/v1/flights?access_key=${key}&flight_iata=${flightIata}`;
 
   try {
-    const res = await fetch(url, { next: { revalidate: 900 } }); // cache 15 min
+    const res = await fetch(url, { next: { revalidate: 900 } });
     const data = await res.json();
 
     if (data.error) {
       return NextResponse.json({ error: data.error.message }, { status: 502 });
     }
 
-    const flight = data.data?.[0];
+    // Find the flight matching our date
+    const flight = data.data?.find((f) => f.flight_date === flightDate);
     if (!flight) {
       return NextResponse.json({ status: "scheduled", message: "No live data yet" });
     }
 
     return NextResponse.json({
-      status: flight.flight_status, // scheduled, active, landed, cancelled, incident, diverted
+      status: flight.flight_status,
       departure: {
         scheduled: flight.departure?.scheduled,
         estimated: flight.departure?.estimated,

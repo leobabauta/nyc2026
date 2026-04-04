@@ -178,11 +178,16 @@ export default function StopCard({ stop, displayNum, isSelected, onSelect, emoji
                     flightStatus.status === "delayed" || flightStatus.departure?.delay ? "text-amber-600 dark:text-amber-400" :
                     "text-gray-500 dark:text-gray-400"
                   }`}>
-                    ✈️ Status: {flightStatus.status?.charAt(0).toUpperCase() + flightStatus.status?.slice(1)}
-                    {flightStatus.departure?.delay ? ` (${flightStatus.departure.delay}min delay)` : ""}
+                    ✈️ {flightStatus.status?.charAt(0).toUpperCase() + flightStatus.status?.slice(1)}
+                    {flightStatus.departure?.delay ? ` (dept ${flightStatus.departure.delay}min delay)` : ""}
+                    {!flightStatus.departure?.delay && flightStatus.arrival?.delay ? ` (arr ${flightStatus.arrival.delay}min delay)` : ""}
                   </p>
-                  {flightStatus.departure?.gate && (
-                    <p className="text-gray-500 dark:text-gray-400">Gate: {flightStatus.departure.gate}{flightStatus.departure.terminal ? ` · Terminal ${flightStatus.departure.terminal}` : ""}</p>
+                  {(flightStatus.departure?.gate || flightStatus.departure?.terminal) && (
+                    <p className="text-gray-500 dark:text-gray-400">
+                      {flightStatus.departure.gate ? `Gate ${flightStatus.departure.gate}` : ""}
+                      {flightStatus.departure.gate && flightStatus.departure.terminal ? " · " : ""}
+                      {flightStatus.departure.terminal ? `Terminal ${flightStatus.departure.terminal}` : ""}
+                    </p>
                   )}
                 </div>
               )}
