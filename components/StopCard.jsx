@@ -79,11 +79,13 @@ export default function StopCard({ stop, displayNum, isSelected, onSelect, emoji
   };
 
   return (
-    <button
+    <div
       ref={cardRef}
       data-stop-id={stop.id}
       onClick={onSelect}
-      className={`w-full text-left rounded-xl p-3 transition-all border ${
+      role="button"
+      tabIndex={0}
+      className={`w-full text-left rounded-xl p-3 transition-all border cursor-pointer ${
         isSelected
           ? "bg-amber-50 dark:bg-[#1e293b] border-amber-400 dark:border-amber-500/50 shadow-lg shadow-amber-500/5"
           : "bg-white dark:bg-[#1e293b] border-gray-200 dark:border-[#334155] hover:bg-gray-50 dark:hover:bg-[#334155]"
@@ -261,6 +263,6 @@ export default function StopCard({ stop, displayNum, isSelected, onSelect, emoji
           )}
         </button>
       </div>
-    </button>
+    </div>
   );
 }
