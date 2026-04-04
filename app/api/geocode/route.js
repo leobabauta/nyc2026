@@ -13,18 +13,31 @@ export async function GET(request) {
     return NextResponse.json({ error: "No API key" }, { status: 501 });
   }
 
-  const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${key}`;
+  // Use Places API Text Search instead of Geocoding API
+  const url = `https://places.googleapis.com/v1/places:searchText`;
 
   try {
-    const res = await fetch(url, { next: { revalidate: 86400 } });
+    const res = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Goog-Api-Key": key,
+        "X-Goog-FieldMask": "places.location,places.displayName",
+      },
+      body: JSON.stringify({ textQuery: address }),
+      next: { revalidate: 86400 },
+    });
     const data = await res.json();
 
-    if (data.status !== "OK" || !data.results?.[0]) {
+    const place = data.places?.[0];
+    if (!place?.location) {
       return NextResponse.json({ error: "Not found" }, { status: 404 });
     }
 
-    const loc = data.results[0].geometry.location;
-    return NextResponse.json({ lat: loc.lat, lng: loc.lng });
+    return NextResponse.json({
+      lat: place.location.latitude,
+      lng: place.location.longitude,
+    });
   } catch (err) {
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
