@@ -108,6 +108,13 @@ export default function StopCard({ stop, displayNum, isSelected, onSelect, emoji
           {/* Expanded details */}
           {isSelected && (
             <div className="mt-3 pt-3 border-t border-gray-200 dark:border-[#334155] space-y-1.5">
+              {/* Expanded notes */}
+              {stop.expandedNotes && (
+                <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed">
+                  {stop.expandedNotes}
+                </p>
+              )}
+
               {/* Photo at top */}
               {details?.photos?.length > 0 && (
                 <PhotoGallery photos={details.photos} />
