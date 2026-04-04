@@ -212,11 +212,11 @@ export default function StopCard({ stop, displayNum, isSelected, onSelect, emoji
                 <input
                   type="text"
                   value={userNote}
-                  onChange={(e) => {
-                    e.stopPropagation();
-                    syncState?.setNote(stop.id, e.target.value);
-                  }}
+                  onChange={(e) => syncState?.setNote(stop.id, e.target.value)}
                   onClick={(e) => e.stopPropagation()}
+                  onMouseDown={(e) => e.stopPropagation()}
+                  onTouchStart={(e) => e.stopPropagation()}
+                  onFocus={(e) => e.stopPropagation()}
                   placeholder="Add a note..."
                   className="w-full px-2 py-1.5 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-xs text-gray-800 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-amber-400"
                 />
