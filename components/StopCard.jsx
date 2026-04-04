@@ -111,6 +111,12 @@ export default function StopCard({ stop, displayNum, isSelected, onSelect, emoji
             )}
           </div>
 
+          {!isSelected && userNote && (
+            <p className="text-xs text-amber-600 dark:text-amber-400 mt-1 leading-relaxed whitespace-pre-wrap">
+              📝 {userNote}
+            </p>
+          )}
+
           <p className="text-xs text-gray-500 dark:text-[#94a3b8] mt-1 leading-relaxed">
             {stop.notes}
           </p>
@@ -211,8 +217,7 @@ export default function StopCard({ stop, displayNum, isSelected, onSelect, emoji
 
               {/* User notes */}
               <div className="pt-1">
-                <input
-                  type="text"
+                <textarea
                   value={userNote}
                   onChange={(e) => syncState?.setNote(stop.id, e.target.value)}
                   onClick={(e) => e.stopPropagation()}
@@ -222,7 +227,8 @@ export default function StopCard({ stop, displayNum, isSelected, onSelect, emoji
                   onKeyUp={(e) => e.stopPropagation()}
                   onFocus={(e) => e.stopPropagation()}
                   placeholder="Add a note..."
-                  className="w-full px-2 py-1.5 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-xs text-gray-800 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-amber-400"
+                  rows={2}
+                  className="w-full px-2 py-1.5 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-xs text-gray-800 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-amber-400 resize-none"
                 />
               </div>
 
