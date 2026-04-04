@@ -10,7 +10,7 @@ export const days = [
     center: { lat: 40.749, lng: -73.976 },
     zoom: 12,
     stops: [
-      { id: 99, name: "Drive to SMF Airport", lat: 38.6953, lng: -121.5918, placeId: null, type: "transport", notes: "Leave home by car.", time: "8:00 AM" },
+      { id: 99, name: "Drive to SMF Airport", lat: 38.6953, lng: -121.5918, placeId: null, type: "transport", notes: "Noelle & Isaiah dropping us off.", time: "8:00 AM" },
       { id: 100, name: "AA 1625 → Phoenix", lat: 38.6953, lng: -121.5918, placeId: null, type: "flight", notes: "SMF → PHX. Depart 10:07am, arrive 11:58am. Duration 1h 51m.", time: "10:07 AM", flightIata: "AA1625", flightDate: "2026-04-04" },
       { id: 101, name: "PHX Phoenix Layover", lat: 33.4373, lng: -112.0078, placeId: null, type: "transport", notes: "3h 17m layover. Arrive 11:58am, depart 3:15pm." },
       { id: 102, name: "AA 2315 → JFK", lat: 40.6413, lng: -73.7781, placeId: null, type: "flight", notes: "PHX → JFK. Depart 3:15pm, arrive 10:59pm. Duration 4h 44m.", time: "3:15 PM", flightIata: "AA2315", flightDate: "2026-04-04" },
