@@ -4,37 +4,20 @@ import { useState, useEffect, useRef } from "react";
 import { markerColors } from "@/data/itinerary";
 import PhotoGallery from "./PhotoGallery";
 
-export default function StopCard({ stop, displayNum, isSelected, onSelect, emoji }) {
+export default function StopCard({ stop, displayNum, isSelected, onSelect, emoji, syncState }) {
   const [details, setDetails] = useState(null);
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
   const [flightStatus, setFlightStatus] = useState(null);
-  const [checked, setChecked] = useState(false);
   const cardRef = useRef(null);
   const color = markerColors[stop.type] || "#888";
 
-  // Load checked state from localStorage
-  useEffect(() => {
-    try {
-      const stored = localStorage.getItem("checkedStops");
-      if (stored) {
-        const set = JSON.parse(stored);
-        setChecked(set.includes(stop.id));
-      }
-    } catch {}
-  }, [stop.id]);
+  const checked = syncState?.checked?.includes(stop.id) || false;
+  const userNote = syncState?.notes?.[stop.id] || "";
 
   const toggleChecked = (e) => {
     e.stopPropagation();
-    setChecked((prev) => {
-      const next = !prev;
-      try {
-        const stored = JSON.parse(localStorage.getItem("checkedStops") || "[]");
-        const updated = next ? [...stored, stop.id] : stored.filter((id) => id !== stop.id);
-        localStorage.setItem("checkedStops", JSON.stringify(updated));
-      } catch {}
-      return next;
-    });
+    syncState?.toggleChecked(stop.id);
   };
 
   useEffect(() => {
@@ -223,6 +206,21 @@ export default function StopCard({ stop, displayNum, isSelected, onSelect, emoji
                   )}
                 </div>
               )}
+
+              {/* User notes */}
+              <div className="pt-1">
+                <input
+                  type="text"
+                  value={userNote}
+                  onChange={(e) => {
+                    e.stopPropagation();
+                    syncState?.setNote(stop.id, e.target.value);
+                  }}
+                  onClick={(e) => e.stopPropagation()}
+                  placeholder="Add a note..."
+                  className="w-full px-2 py-1.5 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-xs text-gray-800 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-amber-400"
+                />
+              </div>
 
               {/* Share / Copy link button */}
               <div className="pt-1.5 relative">

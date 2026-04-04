@@ -6,6 +6,7 @@ import { getPhotosByDay } from "@/lib/photoDB";
 import Sidebar from "./Sidebar";
 import TripMap from "./TripMap";
 import DarkModeToggle from "./DarkModeToggle";
+import { useSyncState } from "@/lib/useSyncState";
 
 const typeEmoji = {
   anchor: "📌",
@@ -36,6 +37,7 @@ export default function TripApp() {
   const [isDark, setIsDark] = useState(true);
   const [userPhotos, setUserPhotos] = useState([]);
   const [weather, setWeather] = useState({});
+  const syncState = useSyncState();
   const objectUrlsRef = useRef([]);
 
   useEffect(() => {
@@ -188,6 +190,7 @@ export default function TripApp() {
             userPhotos={userPhotos}
             onPhotosAdded={loadPhotos}
             weather={weather[day.isoDate]}
+            syncState={syncState}
           />
         </div>
       </main>

@@ -51,6 +51,7 @@ export default function Sidebar({
   userPhotos,
   onPhotosAdded,
   weather,
+  syncState,
 }) {
   const [lightboxIndex, setLightboxIndex] = useState(null);
   const [showPostcard, setShowPostcard] = useState(false);
@@ -186,6 +187,7 @@ export default function Sidebar({
             isSelected={selectedStop === stop.id}
             onSelect={() => onSelectStop(stop.id)}
             emoji={typeEmoji[stop.type] || "📍"}
+            syncState={syncState}
           />
         ))}
         {filteredStops.length === 0 && (
