@@ -161,7 +161,7 @@ export const days = [
     center: { lat: 40.690, lng: -74.175 },
     zoom: 11,
     stops: [
-      { id: 200, name: "Fairfield Inn → EWR", lat: 40.6977, lng: -74.1744, placeId: null, type: "transport", notes: "Hotel shuttle to Newark Liberty airport. Check-out 12pm but leave early!", time: "6:30 AM" },
+      { id: 200, name: "Fairfield Inn → EWR", lat: 40.6977, lng: -74.1744, placeId: null, type: "transport", notes: "Hotel shuttle to Newark Liberty airport.", time: "6:00 AM" },
       { id: 201, name: "AA 1303 → Dallas", lat: 40.6895, lng: -74.1745, placeId: null, type: "flight", notes: "EWR → DFW. Depart 8:00am, arrive 11:03am. Duration 4h 3m.", time: "8:00 AM", flightIata: "AA1303", flightDate: "2026-04-11" },
       { id: 202, name: "DFW Dallas Layover", lat: 32.8998, lng: -97.0403, placeId: null, type: "transport", notes: "53m layover. Quick connection!" },
       { id: 203, name: "AA 2899 → Sacramento", lat: 38.6953, lng: -121.5918, placeId: null, type: "flight", notes: "DFW → SMF. Depart 11:56am, arrive 1:37pm. Duration 3h 41m.", time: "11:56 AM", flightIata: "AA2899", flightDate: "2026-04-11" },
