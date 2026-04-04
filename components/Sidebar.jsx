@@ -57,6 +57,7 @@ export default function Sidebar({
   const [showPostcard, setShowPostcard] = useState(false);
   const [addingStop, setAddingStop] = useState(false);
   const [newStopName, setNewStopName] = useState("");
+  const [newStopLocation, setNewStopLocation] = useState("");
 
   // Build stop id -> 1-based day index
   const dayIndexMap = {};
@@ -199,36 +200,77 @@ export default function Sidebar({
         )}
 
         {/* Custom stops */}
-        {(syncState?.customStops?.[dayIndex] || []).map((cs) => (
+        {(syncState?.customStops?.[dayIndex] || []).map((cs, csIdx, csArr) => (
           <div
             key={cs.id}
-            className="w-full text-left rounded-xl p-3 transition-all border bg-white dark:bg-[#1e293b] border-gray-200 dark:border-[#334155]"
+            className="w-full text-left rounded-xl p-3 transition-all border bg-white dark:bg-[#1e293b] border-dashed border-amber-300 dark:border-amber-500/40"
           >
             <div className="flex items-start gap-3">
-              <span className="shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-xs bg-gray-400 text-white">
+              <span className="shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-xs bg-amber-400 text-white font-bold">
                 +
               </span>
-              <div className="flex-1 min-w-0">
-                <h3 className="font-semibold text-sm text-gray-900 dark:text-[#f1f5f9]">{cs.name}</h3>
-                {syncState?.notes?.[cs.id] && (
-                  <p className="text-xs text-gray-500 dark:text-[#94a3b8] mt-1 whitespace-pre-wrap">{syncState.notes[cs.id]}</p>
+              <div className="flex-1 min-w-0 space-y-1">
+                <input
+                  type="text"
+                  value={cs.name}
+                  onChange={(e) => syncState?.updateCustomStop(dayIndex, cs.id, { name: e.target.value })}
+                  onKeyDown={(e) => e.stopPropagation()}
+                  onKeyUp={(e) => e.stopPropagation()}
+                  className="w-full font-semibold text-sm text-gray-900 dark:text-[#f1f5f9] bg-transparent focus:outline-none focus:border-b focus:border-amber-400"
+                />
+                {cs.location && (
+                  <p className="text-[11px] text-gray-400 dark:text-gray-500">📍 {cs.location}</p>
                 )}
+                <input
+                  type="text"
+                  value={cs.location || ""}
+                  onChange={(e) => syncState?.updateCustomStop(dayIndex, cs.id, { location: e.target.value })}
+                  onKeyDown={(e) => e.stopPropagation()}
+                  onKeyUp={(e) => e.stopPropagation()}
+                  placeholder="Location / address..."
+                  className="w-full px-2 py-1 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-[11px] text-gray-600 dark:text-gray-300 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-amber-400"
+                />
                 <textarea
                   value={syncState?.notes?.[cs.id] || ""}
-                  onChange={(e) => syncState?.setNote(cs.id, e.target.value)}
-                  onClick={(e) => e.stopPropagation()}
+                  onChange={(e) => {
+                    syncState?.setNote(cs.id, e.target.value);
+                    e.target.style.height = "auto";
+                    e.target.style.height = e.target.scrollHeight + "px";
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.height = "auto";
+                    e.target.style.height = e.target.scrollHeight + "px";
+                  }}
                   onKeyDown={(e) => e.stopPropagation()}
                   onKeyUp={(e) => e.stopPropagation()}
                   placeholder="Add a note..."
                   rows={1}
-                  className="w-full mt-1.5 px-2 py-1.5 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-xs text-gray-800 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-amber-400 resize-none"
+                  className="w-full px-2 py-1 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-xs text-gray-800 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-amber-400 resize-none overflow-hidden"
                 />
-                <button
-                  onClick={() => syncState?.removeCustomStop(dayIndex, cs.id)}
-                  className="text-[10px] text-red-400 hover:text-red-600 mt-1"
-                >
-                  Remove
-                </button>
+                <div className="flex items-center gap-2 pt-0.5">
+                  <button
+                    onClick={() => syncState?.moveCustomStop(dayIndex, cs.id, -1)}
+                    disabled={csIdx === 0}
+                    className="text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 disabled:opacity-30"
+                    title="Move up"
+                  >
+                    ▲
+                  </button>
+                  <button
+                    onClick={() => syncState?.moveCustomStop(dayIndex, cs.id, 1)}
+                    disabled={csIdx === csArr.length - 1}
+                    className="text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 disabled:opacity-30"
+                    title="Move down"
+                  >
+                    ▼
+                  </button>
+                  <button
+                    onClick={() => syncState?.removeCustomStop(dayIndex, cs.id)}
+                    className="text-[10px] text-red-400 hover:text-red-600 ml-auto"
+                  >
+                    Remove
+                  </button>
+                </div>
               </div>
               <button
                 type="button"
@@ -251,40 +293,59 @@ export default function Sidebar({
 
         {/* Add stop */}
         {addingStop ? (
-          <div className="flex gap-2">
+          <div className="space-y-2 p-3 rounded-xl border border-dashed border-amber-400 bg-amber-50/50 dark:bg-amber-500/5">
             <input
               type="text"
               value={newStopName}
               onChange={(e) => setNewStopName(e.target.value)}
               onKeyDown={(e) => {
                 if (e.key === "Enter" && newStopName.trim()) {
-                  syncState?.addCustomStop(dayIndex, newStopName.trim());
+                  syncState?.addCustomStop(dayIndex, newStopName.trim(), newStopLocation.trim());
                   setNewStopName("");
+                  setNewStopLocation("");
                   setAddingStop(false);
                 }
               }}
               placeholder="Stop name..."
               autoFocus
-              className="flex-1 px-2 py-1.5 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-1 focus:ring-amber-400"
+              className="w-full px-2 py-1.5 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-1 focus:ring-amber-400"
             />
-            <button
-              onClick={() => {
-                if (newStopName.trim()) {
-                  syncState?.addCustomStop(dayIndex, newStopName.trim());
+            <input
+              type="text"
+              value={newStopLocation}
+              onChange={(e) => setNewStopLocation(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && newStopName.trim()) {
+                  syncState?.addCustomStop(dayIndex, newStopName.trim(), newStopLocation.trim());
                   setNewStopName("");
+                  setNewStopLocation("");
+                  setAddingStop(false);
                 }
-                setAddingStop(false);
               }}
-              className="px-3 py-1.5 rounded-lg bg-amber-500 text-white text-sm font-medium"
-            >
-              Add
-            </button>
-            <button
-              onClick={() => { setAddingStop(false); setNewStopName(""); }}
-              className="px-2 py-1.5 rounded-lg bg-gray-200 dark:bg-gray-700 text-sm text-gray-600 dark:text-gray-300"
-            >
-              ✕
-            </button>
+              placeholder="Location / address (optional)..."
+              className="w-full px-2 py-1.5 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-xs text-gray-600 dark:text-gray-300 focus:outline-none focus:ring-1 focus:ring-amber-400"
+            />
+            <div className="flex gap-2">
+              <button
+                onClick={() => {
+                  if (newStopName.trim()) {
+                    syncState?.addCustomStop(dayIndex, newStopName.trim(), newStopLocation.trim());
+                    setNewStopName("");
+                    setNewStopLocation("");
+                  }
+                  setAddingStop(false);
+                }}
+                className="px-3 py-1.5 rounded-lg bg-amber-500 text-white text-sm font-medium"
+              >
+                Add
+              </button>
+              <button
+                onClick={() => { setAddingStop(false); setNewStopName(""); setNewStopLocation(""); }}
+                className="px-2 py-1.5 rounded-lg bg-gray-200 dark:bg-gray-700 text-sm text-gray-600 dark:text-gray-300"
+              >
+                Cancel
+              </button>
+            </div>
           </div>
         ) : (
           <button
