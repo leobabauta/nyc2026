@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useMemo, useEffect, useRef } from "react";
 import { days } from "@/data/itinerary";
-import { getPhotosByDay } from "@/lib/photoDB";
+import { getPhotosByDay, deletePhoto } from "@/lib/photoDB";
 import Sidebar from "./Sidebar";
 import TripMap from "./TripMap";
 import DarkModeToggle from "./DarkModeToggle";
@@ -120,6 +120,17 @@ export default function TripApp() {
     };
   }, [loadPhotos]);
 
+  const removePhoto = useCallback(async (photo) => {
+    // Remove from local IndexedDB if it's a local photo
+    if (typeof photo.id === "number") {
+      try { await deletePhoto(photo.id); } catch {}
+    }
+    // Remove from synced state
+    syncState.removeSyncedPhoto(selectedDay, photo.filename);
+    // Reload
+    loadPhotos();
+  }, [selectedDay, syncState, loadPhotos]);
+
   const filteredStops = useMemo(
     () =>
       activeFilter === "all"
@@ -206,6 +217,7 @@ export default function TripApp() {
             onFilterChange={setActiveFilter}
             userPhotos={userPhotos}
             onPhotosAdded={loadPhotos}
+            onRemovePhoto={removePhoto}
             weather={weather[day.isoDate]}
             syncState={syncState}
           />

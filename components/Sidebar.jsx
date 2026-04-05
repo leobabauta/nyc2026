@@ -50,6 +50,7 @@ export default function Sidebar({
   onFilterChange,
   userPhotos,
   onPhotosAdded,
+  onRemovePhoto,
   weather,
   syncState,
 }) {
@@ -132,19 +133,28 @@ export default function Sidebar({
           </p>
           <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-thin">
             {userPhotos.map((photo, i) => (
-              <button
-                key={photo.id}
-                type="button"
-                onClick={() => setLightboxIndex(i)}
-                className="shrink-0 w-16 h-16 rounded-lg overflow-hidden bg-gray-200 dark:bg-gray-700 hover:ring-2 ring-amber-400 transition-all"
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={photo.thumbSrc}
-                  alt={photo.filename}
-                  className="w-full h-full object-cover"
-                />
-              </button>
+              <div key={photo.id} className="shrink-0 relative">
+                <button
+                  type="button"
+                  onClick={() => setLightboxIndex(i)}
+                  className="w-16 h-16 rounded-lg overflow-hidden bg-gray-200 dark:bg-gray-700 hover:ring-2 ring-amber-400 transition-all"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={photo.thumbSrc}
+                    alt={photo.filename}
+                    className="w-full h-full object-cover"
+                  />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onRemovePhoto(photo)}
+                  className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-red-500 text-white text-[10px] flex items-center justify-center shadow hover:bg-red-600"
+                  aria-label="Remove photo"
+                >
+                  ✕
+                </button>
+              </div>
             ))}
           </div>
         </div>
