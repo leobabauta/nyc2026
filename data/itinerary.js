@@ -24,19 +24,18 @@ export const days = [
     isoDate: "2026-04-05",
     title: "SoHo → LES → Midtown",
     narrative:
-      "Start with a late breakfast at Cloudy Donut, browse books at McNally Jackson, then head to your tattoo appointment. Explore the New Museum and the Lower East Side before your evening omakase.",
+      "Coffee at Blue Bottle, late breakfast at Cloudy Donut, then tattoo appointment at Luna Moth. Lunch at Spicy Moon, explore Orchard Grocer + MooShoes, browse Pickles and Muji.",
     hotel: "Courtyard by Marriott — 3 East 40th St",
     center: { lat: 40.726, lng: -73.997 },
     zoom: 14,
     stops: [
+      { id: 60, name: "Blue Bottle Coffee", lat: 40.7523, lng: -73.9785, placeId: null, type: "food", notes: "60 E 42nd St #140. Coffee to start the day." },
       { id: 1, name: "Cloudy Donut", lat: 40.7218, lng: -73.9955, placeId: "ChIJXVRaPwBZwokRIR9stjtHQdA", type: "food", notes: "Breakfast. Opens 11am Fri/Sat/Sun only." },
-      { id: 2, name: "McNally Jackson (SoHo)", lat: 40.7254, lng: -74.0007, placeId: "ChIJwaHnQI9ZwokRvlECeQqpHdg", type: "books", notes: "Pre-tattoo browse. Cast-iron architecture & Gucci Art Wall steps away." },
       { id: 3, name: "Luna Moth Tattoo", lat: 40.7198, lng: -73.9991, placeId: "ChIJKbKLNSpZwokRLmw6O5i-p-0", type: "anchor", notes: "BOOKED. 4th floor, 161 Lafayette St.", time: "12:00 PM" },
       { id: 5, name: "Spicy Moon Bowery", lat: 40.7234, lng: -73.9925, placeId: "ChIJAb8jiJZZwokROX7aeBYf2I4", type: "food", notes: "Lunch. Vegan Sichuan. #1 community pick." },
-      { id: 4, name: "New Museum", lat: 40.7223, lng: -73.9929, placeId: "ChIJlaRS3IVZwokR2llMD6dCt-U", type: "museum", notes: "Contemporary art. Easy stop between tattoo and LES." },
       { id: 6, name: "Orchard Grocer + MooShoes", lat: 40.7177, lng: -73.9902, placeId: "ChIJAQReQIdZwokR1rcwiar_XqM", type: "food", notes: "78 Orchard St. Vegan deli + soft serve. MooShoes has a resident cat." },
-      { id: 7, name: "Housing Works Bookstore", lat: 40.7246, lng: -73.9966, placeId: "ChIJSaRjC49ZwokR402Rpxj6i9Q", type: "books", notes: "Used books + café. Beautiful spiral staircase." },
-      { id: 8, name: "Omakaseed", lat: 40.7584, lng: -73.9833, placeId: "ChIJo5gKgoJZwokRRvQUij2R7T8", type: "anchor", notes: "BOOKED. Vegan omakase 11–15 courses.", time: "7:30 PM" },
+      { id: 61, name: "Pickles Bookstore", lat: 40.7185, lng: -73.9882, placeId: null, type: "books", notes: "LES indie bookstore." },
+      { id: 62, name: "Muji Fifth Avenue", lat: 40.7541, lng: -73.9797, placeId: null, type: "shopping", notes: "Japanese lifestyle store. 475 5th Ave." },
     ],
   },
   {
@@ -180,3 +179,11 @@ export const markerColors = {
   hotel: "#6366f1",
   transport: "#64748b",
 };
+
+// Saved stops — removed from itinerary but kept for potential future use
+export const savedStops = [
+  { id: 2, name: "McNally Jackson (SoHo)", lat: 40.7254, lng: -74.0007, placeId: "ChIJwaHnQI9ZwokRvlECeQqpHdg", type: "books", notes: "Pre-tattoo browse. Cast-iron architecture & Gucci Art Wall steps away.", from: "Day 1" },
+  { id: 4, name: "New Museum", lat: 40.7223, lng: -73.9929, placeId: "ChIJlaRS3IVZwokR2llMD6dCt-U", type: "museum", notes: "Contemporary art. Easy stop between tattoo and LES.", from: "Day 1" },
+  { id: 7, name: "Housing Works Bookstore", lat: 40.7246, lng: -73.9966, placeId: "ChIJSaRjC49ZwokR402Rpxj6i9Q", type: "books", notes: "Used books + café. Beautiful spiral staircase.", from: "Day 1" },
+  { id: 8, name: "Omakaseed", lat: 40.7584, lng: -73.9833, placeId: "ChIJo5gKgoJZwokRRvQUij2R7T8", type: "anchor", notes: "BOOKED. Vegan omakase 11–15 courses.", time: "7:30 PM", from: "Day 1" },
+];
