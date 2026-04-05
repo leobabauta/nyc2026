@@ -69,6 +69,9 @@ export default function TripApp() {
 
   const day = days[selectedDay];
 
+  const syncedPhotosRef = useRef(syncState.syncedPhotos);
+  syncedPhotosRef.current = syncState.syncedPhotos;
+
   const loadPhotos = useCallback(async () => {
     // Revoke old object URLs
     objectUrlsRef.current.forEach((u) => URL.revokeObjectURL(u));
@@ -96,7 +99,7 @@ export default function TripApp() {
     } catch {}
 
     // Synced photos from other devices (Vercel Blob URLs)
-    const synced = (syncState.syncedPhotos?.[selectedDay] || [])
+    const synced = (syncedPhotosRef.current?.[selectedDay] || [])
       .filter((sp) => !localPhotos.some((lp) => lp.filename === sp.filename))
       .map((sp) => ({
         id: `synced-${sp.timestamp}`,
@@ -108,7 +111,7 @@ export default function TripApp() {
       }));
 
     setUserPhotos([...localPhotos, ...synced]);
-  }, [selectedDay, syncState.syncedPhotos]);
+  }, [selectedDay]);
 
   useEffect(() => {
     loadPhotos();
