@@ -72,9 +72,30 @@ export default function Sidebar({
     }
   };
 
-  // Build stop id -> 1-based day index
+  // Filter hidden stops and apply custom ordering
+  const hiddenSet = new Set(syncState?.hiddenStops || []);
+  const visibleStops = filteredStops.filter((s) => !hiddenSet.has(s.id));
+  const savedOrder = syncState?.stopOrder?.[dayIndex];
+  const orderedStops = savedOrder
+    ? savedOrder.map((id) => visibleStops.find((s) => s.id === id)).filter(Boolean)
+      .concat(visibleStops.filter((s) => !savedOrder.includes(s.id)))
+    : visibleStops;
+
+  // Build stop id -> 1-based display index
   const dayIndexMap = {};
-  day.stops.forEach((s, i) => { dayIndexMap[s.id] = i + 1; });
+  orderedStops.forEach((s, i) => { dayIndexMap[s.id] = i + 1; });
+
+  const moveStop = (stopId, direction) => {
+    const ids = orderedStops.map((s) => s.id);
+    const idx = ids.indexOf(stopId);
+    if (idx < 0) return;
+    const newIdx = idx + direction;
+    if (newIdx < 0 || newIdx >= ids.length) return;
+    const temp = ids[idx];
+    ids[idx] = ids[newIdx];
+    ids[newIdx] = temp;
+    syncState?.setStopOrder(dayIndex, ids);
+  };
 
   return (
     <div className="p-4 space-y-4">
@@ -205,26 +226,24 @@ export default function Sidebar({
       {/* Merged stops list */}
       <div className="space-y-2">
         {(() => {
-          // Build merged list: itinerary stops + custom stops interleaved by position
+          // Build merged list: ordered itinerary stops + custom stops interleaved by position
           const customArr = (syncState?.customStops?.[dayIndex] || []).map((cs) => ({
-            ...cs, _custom: true, position: cs.position ?? filteredStops.length,
+            ...cs, _custom: true, position: cs.position ?? orderedStops.length,
           }));
           const merged = [];
           let stopIdx = 0;
-          // Insert itinerary stops and custom stops in position order
-          const totalLen = filteredStops.length + customArr.length;
+          const totalLen = orderedStops.length + customArr.length;
           const sortedCustom = [...customArr].sort((a, b) => a.position - b.position);
           let customIdx = 0;
 
           for (let pos = 0; pos < totalLen; pos++) {
-            // Check if any custom stop belongs at this position
             while (customIdx < sortedCustom.length && sortedCustom[customIdx].position <= pos) {
               merged.push(sortedCustom[customIdx]);
               customIdx++;
               pos++;
             }
-            if (stopIdx < filteredStops.length) {
-              merged.push(filteredStops[stopIdx]);
+            if (stopIdx < orderedStops.length) {
+              merged.push(orderedStops[stopIdx]);
               stopIdx++;
             }
           }
@@ -304,12 +323,15 @@ export default function Sidebar({
                 onSelect={() => onSelectStop(stop.id)}
                 emoji={typeEmoji[stop.type] || "📍"}
                 syncState={syncState}
+                onMoveUp={() => moveStop(stop.id, -1)}
+                onMoveDown={() => moveStop(stop.id, 1)}
+                onHide={() => syncState?.hideStop(stop.id)}
               />
             );
           });
         })()}
 
-        {filteredStops.length === 0 && (syncState?.customStops?.[dayIndex] || []).length === 0 && (
+        {orderedStops.length === 0 && (syncState?.customStops?.[dayIndex] || []).length === 0 && (
           <p className="text-sm text-gray-400 dark:text-gray-500 italic py-4 text-center">
             No stops match this filter.
           </p>

@@ -29,6 +29,7 @@ export const days = [
     center: { lat: 40.726, lng: -73.997 },
     zoom: 14,
     stops: [
+      { id: 70, name: "Courtyard by Marriott", lat: 40.7524, lng: -73.9791, placeId: null, type: "hotel", notes: "3 East 40th St. Start of day." },
       { id: 60, name: "Blue Bottle Coffee", lat: 40.7523, lng: -73.9785, placeId: null, type: "food", notes: "60 E 42nd St #140. Coffee to start the day." },
       { id: 1, name: "Cloudy Donut", lat: 40.7218, lng: -73.9955, placeId: "ChIJXVRaPwBZwokRIR9stjtHQdA", type: "food", notes: "Breakfast. Opens 11am Fri/Sat/Sun only." },
       { id: 3, name: "Luna Moth Tattoo", lat: 40.7198, lng: -73.9991, placeId: "ChIJKbKLNSpZwokRLmw6O5i-p-0", type: "anchor", notes: "BOOKED. 4th floor, 161 Lafayette St.", time: "12:00 PM" },
@@ -49,9 +50,11 @@ export const days = [
     center: { lat: 40.748, lng: -74.002 },
     zoom: 13,
     stops: [
-      { id: 9, name: "Westsider Rare & Used Books", lat: 40.7847, lng: -73.979, placeId: "ChIJOyW6JIZYwokRprVNTZPjc-w", type: "books", notes: "Opens 10am. Café Grumpy nearby for coffee." },
+      { id: 71, name: "Courtyard by Marriott", lat: 40.7524, lng: -73.9791, placeId: null, type: "hotel", notes: "3 East 40th St. Start of day." },
+      { id: 63, name: "Zucker's Bagels", lat: 40.7537, lng: -73.9826, placeId: null, type: "food", notes: "Breakfast near Bryant Park. 40 E 41st St." },
       { id: 10, name: "Amer. Museum of Natural History", lat: 40.7813, lng: -73.974, placeId: "ChIJCXoPsPRYwokRsV1MYnKBfaI", type: "museum", notes: "Opens 10am. Allow 2.5–3 hrs." },
       { id: 11, name: "Delice & Sarrasin", lat: 40.7288, lng: -74.0031, placeId: "ChIJjRH1HZRZwokRCnkilVd-0iE", type: "food", notes: "Lunch. NYC's only fully vegan French restaurant. Opens 11am." },
+      { id: 2, name: "McNally Jackson (SoHo)", lat: 40.7254, lng: -74.0007, placeId: "ChIJwaHnQI9ZwokRvlECeQqpHdg", type: "books", notes: "Cast-iron architecture & Gucci Art Wall steps away." },
       { id: 12, name: "Chelsea Market", lat: 40.7424, lng: -74.0061, placeId: "ChIJw2lMFL9ZwokRosAtly52YX4", type: "shopping", notes: "En route to High Line." },
       { id: 13, name: "The High Line", lat: 40.748, lng: -74.0048, placeId: "ChIJ5bQPhMdZwokRkTwKhVxhP1g", type: "park", notes: "Enter at 30th St, walk south to Gansevoort." },
       { id: 15, name: "Three Lives & Company", lat: 40.7344, lng: -74.0015, placeId: "ChIJ4SYiPZRZwokRM_H1_7dJhMY", type: "books", notes: "Beloved West Village indie bookstore." },
@@ -69,6 +72,7 @@ export const days = [
     center: { lat: 40.758, lng: -73.978 },
     zoom: 13,
     stops: [
+      { id: 72, name: "Courtyard by Marriott", lat: 40.7524, lng: -73.9791, placeId: null, type: "hotel", notes: "3 East 40th St. Start of day." },
       { id: 18, name: "UT47 Kitchen & Bar", lat: 40.7618, lng: -73.9904, placeId: "ChIJYWlTWVFYwokRVffxIe_Erc4", type: "food", notes: "Brunch. Korean-inspired all-vegan. Opens 8am." },
       { id: 19, name: "Metropolitan Museum of Art", lat: 40.7794, lng: -73.9632, placeId: "ChIJb8Jg9pZYwokR-qHGtvSkLzs", type: "museum", notes: "Opens 10am Tues. Allow 2+ hrs." },
       { id: 20, name: "Central Park—Belvedere", lat: 40.7797, lng: -73.9691, placeId: null, type: "park", notes: "Walk: Belvedere → Bethesda Terrace → Bow Bridge → Strawberry Fields." },
@@ -92,6 +96,7 @@ export const days = [
     center: { lat: 40.757, lng: -73.982 },
     zoom: 14,
     stops: [
+      { id: 73, name: "Courtyard by Marriott", lat: 40.7524, lng: -73.9791, placeId: null, type: "hotel", notes: "3 East 40th St. Start of day." },
       { id: 28, name: "Doughnut Plant", lat: 40.7443, lng: -73.9967, placeId: "ChIJPTYLHLtZwokRdnfW82RHomw", type: "food", notes: "Coffee & doughnut to start. Chelsea location." },
       { id: 29, name: "MoMA", lat: 40.7614, lng: -73.9776, placeId: "ChIJKxDbe_lYwokRVf__s8CPn-o", type: "museum", notes: "Opens 10:30am. Allow 2–3 hrs." },
       { id: 30, name: "Beyond Sushi", lat: 40.7633, lng: -73.9772, placeId: "ChIJFy8n9PlYwokRVeEJbuCg2UE", type: "food", notes: "Lunch. Vegan sushi, steps from MoMA." },
@@ -111,6 +116,7 @@ export const days = [
     center: { lat: 40.693, lng: -73.97 },
     zoom: 12,
     stops: [
+      { id: 74, name: "Courtyard by Marriott", lat: 40.7524, lng: -73.9791, placeId: null, type: "hotel", notes: "3 East 40th St. Start of day." },
       { id: 34, name: "A.T.M. Vegan Deli", lat: 40.691, lng: -73.9559, placeId: "ChIJd-pnZKJZwokR_7xeVddxFOc", type: "food", notes: "Legendary vegan BEC. Opens 8am weekdays." },
       { id: 35, name: "Cafe con Libros", lat: 40.6743, lng: -73.9526, placeId: "ChIJd8hmM5xbwokR_CrQGaACpk0", type: "books", notes: "Black feminist bookstore + café. Closes 2pm weekdays." },
       { id: 36, name: "Unnameable Books", lat: 40.6788, lng: -73.9683, placeId: "ChIJxWzqeqZbwokRRfuaT-IC6RQ", type: "books", notes: "Prospect Heights. Great philosophy + literary fiction." },
@@ -135,6 +141,7 @@ export const days = [
     center: { lat: 40.731, lng: -73.989 },
     zoom: 14,
     stops: [
+      { id: 75, name: "Courtyard by Marriott", lat: 40.7524, lng: -73.9791, placeId: null, type: "hotel", notes: "3 East 40th St. Start of day. Check out 11am today!" },
       { id: 45, name: "abcV", lat: 40.738, lng: -73.9893, placeId: "ChIJxXrbJaJZwokRAAEnPk3AJh4", type: "food", notes: "Breakfast. Opens 8am. OR Candle (386 3rd Ave, opens 11am)." },
       { id: 46, name: "Candle", lat: 40.7419, lng: -73.9814, placeId: "ChIJn3v7DTNZwokRGmPnctINxp4", type: "food", notes: "Alternative to abcV. 386 3rd Ave. Opens 11am — better as brunch." },
       { id: 47, name: "Strand Book Store", lat: 40.7333, lng: -73.991, placeId: "ChIJnSKGEJlZwokRQIpiCvzKzV4", type: "books", notes: "If not done Day 3. Opens 10am." },
@@ -186,4 +193,5 @@ export const savedStops = [
   { id: 4, name: "New Museum", lat: 40.7223, lng: -73.9929, placeId: "ChIJlaRS3IVZwokR2llMD6dCt-U", type: "museum", notes: "Contemporary art. Easy stop between tattoo and LES.", from: "Day 1" },
   { id: 7, name: "Housing Works Bookstore", lat: 40.7246, lng: -73.9966, placeId: "ChIJSaRjC49ZwokR402Rpxj6i9Q", type: "books", notes: "Used books + café. Beautiful spiral staircase.", from: "Day 1" },
   { id: 8, name: "Omakaseed", lat: 40.7584, lng: -73.9833, placeId: "ChIJo5gKgoJZwokRRvQUij2R7T8", type: "anchor", notes: "BOOKED. Vegan omakase 11–15 courses.", time: "7:30 PM", from: "Day 1" },
+  { id: 9, name: "Westsider Rare & Used Books", lat: 40.7847, lng: -73.979, placeId: "ChIJOyW6JIZYwokRprVNTZPjc-w", type: "books", notes: "Opens 10am. Café Grumpy nearby for coffee.", from: "Day 2" },
 ];

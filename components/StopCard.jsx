@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { markerColors } from "@/data/itinerary";
 import PhotoGallery from "./PhotoGallery";
 
-export default function StopCard({ stop, displayNum, isSelected, onSelect, emoji, syncState }) {
+export default function StopCard({ stop, displayNum, isSelected, onSelect, emoji, syncState, onMoveUp, onMoveDown, onHide }) {
   const [details, setDetails] = useState(null);
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -232,6 +232,16 @@ export default function StopCard({ stop, displayNum, isSelected, onSelect, emoji
                   rows={1}
                   className="w-full px-2 py-1.5 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-xs text-gray-800 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-amber-400 resize-none overflow-hidden"
                 />
+              </div>
+
+              {/* Reorder / delete controls */}
+              <div className="flex items-center gap-2 pt-1">
+                <button onClick={(e) => { e.stopPropagation(); onMoveUp?.(); }}
+                  className="text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-200" title="Move up">▲</button>
+                <button onClick={(e) => { e.stopPropagation(); onMoveDown?.(); }}
+                  className="text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-200" title="Move down">▼</button>
+                <button onClick={(e) => { e.stopPropagation(); onHide?.(); }}
+                  className="text-[10px] text-red-400 hover:text-red-600 ml-auto" title="Remove from day">Remove</button>
               </div>
 
               {/* Share / Copy link button */}
