@@ -131,13 +131,21 @@ export default function TripApp() {
     loadPhotos();
   }, [selectedDay, syncState, loadPhotos]);
 
-  const filteredStops = useMemo(
-    () =>
-      activeFilter === "all"
-        ? day.stops
-        : day.stops.filter((s) => s.type === activeFilter),
-    [day, activeFilter]
-  );
+  const filteredStops = useMemo(() => {
+    const hiddenSet = new Set(syncState.hiddenStops || []);
+    let stops = day.stops.filter((s) => !hiddenSet.has(s.id));
+    if (activeFilter !== "all") {
+      stops = stops.filter((s) => s.type === activeFilter);
+    }
+    // Apply custom ordering if saved
+    const savedOrder = syncState.stopOrder?.[selectedDay];
+    if (savedOrder) {
+      const ordered = savedOrder.map((id) => stops.find((s) => s.id === id)).filter(Boolean);
+      const remaining = stops.filter((s) => !savedOrder.includes(s.id));
+      stops = [...ordered, ...remaining];
+    }
+    return stops;
+  }, [day, activeFilter, syncState.hiddenStops, syncState.stopOrder, selectedDay]);
 
   // Update URL when day or stop changes
   useEffect(() => {

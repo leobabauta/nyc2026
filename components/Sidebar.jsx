@@ -72,21 +72,14 @@ export default function Sidebar({
     }
   };
 
-  // Filter hidden stops and apply custom ordering
-  const hiddenSet = new Set(syncState?.hiddenStops || []);
-  const visibleStops = filteredStops.filter((s) => !hiddenSet.has(s.id));
-  const savedOrder = syncState?.stopOrder?.[dayIndex];
-  const orderedStops = savedOrder
-    ? savedOrder.map((id) => visibleStops.find((s) => s.id === id)).filter(Boolean)
-      .concat(visibleStops.filter((s) => !savedOrder.includes(s.id)))
-    : visibleStops;
+  // filteredStops already has hidden/ordering applied from TripApp
 
   // Build stop id -> 1-based display index
   const dayIndexMap = {};
-  orderedStops.forEach((s, i) => { dayIndexMap[s.id] = i + 1; });
+  filteredStops.forEach((s, i) => { dayIndexMap[s.id] = i + 1; });
 
   const moveStop = (stopId, direction) => {
-    const ids = orderedStops.map((s) => s.id);
+    const ids = filteredStops.map((s) => s.id);
     const idx = ids.indexOf(stopId);
     if (idx < 0) return;
     const newIdx = idx + direction;
@@ -228,11 +221,11 @@ export default function Sidebar({
         {(() => {
           // Build merged list: ordered itinerary stops + custom stops interleaved by position
           const customArr = (syncState?.customStops?.[dayIndex] || []).map((cs) => ({
-            ...cs, _custom: true, position: cs.position ?? orderedStops.length,
+            ...cs, _custom: true, position: cs.position ?? filteredStops.length,
           }));
           const merged = [];
           let stopIdx = 0;
-          const totalLen = orderedStops.length + customArr.length;
+          const totalLen = filteredStops.length + customArr.length;
           const sortedCustom = [...customArr].sort((a, b) => a.position - b.position);
           let customIdx = 0;
 
@@ -242,8 +235,8 @@ export default function Sidebar({
               customIdx++;
               pos++;
             }
-            if (stopIdx < orderedStops.length) {
-              merged.push(orderedStops[stopIdx]);
+            if (stopIdx < filteredStops.length) {
+              merged.push(filteredStops[stopIdx]);
               stopIdx++;
             }
           }
@@ -262,7 +255,7 @@ export default function Sidebar({
                   className="w-full text-left rounded-xl p-3 transition-all border bg-white dark:bg-[#1e293b] border-dashed border-amber-300 dark:border-amber-500/40"
                 >
                   <div className="flex items-start gap-3">
-                    <span className="shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-xs bg-amber-400 text-white font-bold">+</span>
+                    <span className="shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-xs bg-amber-400 text-white font-bold">{mergedIdx + 1}</span>
                     <div className="flex-1 min-w-0 space-y-1">
                       <input type="text" value={cs.name}
                         onChange={(e) => syncState?.updateCustomStop(dayIndex, cs.id, { name: e.target.value })}
@@ -318,7 +311,7 @@ export default function Sidebar({
               <StopCard
                 key={stop.id}
                 stop={stop}
-                displayNum={dayIndexMap[stop.id]}
+                displayNum={mergedIdx + 1}
                 isSelected={selectedStop === stop.id}
                 onSelect={() => onSelectStop(stop.id)}
                 emoji={typeEmoji[stop.type] || "📍"}
@@ -331,7 +324,7 @@ export default function Sidebar({
           });
         })()}
 
-        {orderedStops.length === 0 && (syncState?.customStops?.[dayIndex] || []).length === 0 && (
+        {filteredStops.length === 0 && (syncState?.customStops?.[dayIndex] || []).length === 0 && (
           <p className="text-sm text-gray-400 dark:text-gray-500 italic py-4 text-center">
             No stops match this filter.
           </p>

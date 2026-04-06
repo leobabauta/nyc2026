@@ -131,8 +131,9 @@ export default function TripMap({ day, filteredStops, selectedStop, onSelectStop
     markersRef.current.forEach((m) => m.setMap(null));
     markersRef.current = [];
 
+    // Use filteredStops order (which has custom ordering applied)
     const dayIndexMap = {};
-    day.stops.forEach((s, i) => { dayIndexMap[s.id] = i + 1; });
+    filteredStops.forEach((s, i) => { dayIndexMap[s.id] = i + 1; });
 
     filteredStops.forEach((stop) => {
       const color = markerColors[stop.type] || "#888";
