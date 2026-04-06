@@ -10,6 +10,7 @@ export default function StopCard({ stop, displayNum, isSelected, onSelect, emoji
   const [copied, setCopied] = useState(false);
   const [flightStatus, setFlightStatus] = useState(null);
   const cardRef = useRef(null);
+  const noteRef = useRef(null);
   const color = markerColors[stop.type] || "#888";
 
   const checked = syncState?.checked?.includes(stop.id) || false;
@@ -49,12 +50,16 @@ export default function StopCard({ stop, displayNum, isSelected, onSelect, emoji
       .catch(() => {});
   }, [isSelected, stop.flightIata, stop.flightDate, flightStatus]);
 
-  // Auto-scroll into view when selected
+  // Auto-scroll into view and auto-size note when selected
   useEffect(() => {
     if (isSelected && cardRef.current) {
       cardRef.current.scrollIntoView({ behavior: "smooth", block: "nearest" });
     }
-  }, [isSelected]);
+    if (isSelected && noteRef.current) {
+      noteRef.current.style.height = "auto";
+      noteRef.current.style.height = noteRef.current.scrollHeight + "px";
+    }
+  }, [isSelected, userNote]);
 
   const handleShare = async (e) => {
     e.stopPropagation();
@@ -212,6 +217,7 @@ export default function StopCard({ stop, displayNum, isSelected, onSelect, emoji
               {/* User notes */}
               <div className="pt-1">
                 <textarea
+                  ref={noteRef}
                   value={userNote}
                   onChange={(e) => {
                     syncState?.setNote(stop.id, e.target.value);
