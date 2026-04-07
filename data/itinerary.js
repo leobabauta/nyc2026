@@ -126,6 +126,7 @@ export const days = [
       { id: 40, name: "Jajaja Mexicana (Wburg)", lat: 40.7201, lng: -73.9616, placeId: "ChIJgV3yD_lZwokRPTi6aPfX2yo", type: "food", notes: "Lunch. All-vegan Mexican. Opens 11:30am." },
       { id: 41, name: "Catbird Jewelry", lat: 40.719, lng: -73.9599, placeId: "ChIJw_41G15ZwokRrb_PYPDj0QE", type: "shopping", notes: "108 N 7th St, Williamsburg." },
       { id: 42, name: "McNally Jackson (Wburg)", lat: 40.7177, lng: -73.9621, placeId: "ChIJ7_CZzWBZwokRtnN6AuNPxGY", type: "books", notes: "76 N 4th St. Two floors, great film & art section." },
+      { id: 64, name: "Spoonbill & Sugartown", lat: 40.7148, lng: -73.9612, placeId: null, type: "books", notes: "Art, architecture & design bookstore. 218 Bedford Ave, Williamsburg." },
       { id: 43, name: "Reverie Vegan Restaurant", lat: 40.7163, lng: -73.9622, placeId: "ChIJrTCI7ThZwokRCut1Lx1HUXo", type: "food", notes: "Dinner. 4.9★. Opens 4:30pm. Happy hour until 6:30pm." },
       { id: 44, name: "DUMBO Walk", lat: 40.7033, lng: -73.9903, placeId: null, type: "park", notes: "Washington St for iconic Manhattan Bridge photo. Cobblestones at night." },
     ],
