@@ -134,15 +134,16 @@ export const days = [
     isoDate: "2026-04-10",
     title: "East Village → Newark",
     narrative:
-      "Final exploring day — breakfast at abcV, morning at the Met, last bookstore visits, lunch at Superiority Burger, and a leisurely afternoon in Tompkins Square Park. Dinner at Hangawi, then head to the Newark airport hotel for tomorrow's early flight.",
+      "Final exploring day — brunch at Candle, afternoon at the Met, stroll through Central Park, browse Albertine Books, then last bookstore visits and dinner at Hangawi before heading to the Newark airport hotel.",
     hotel: "Check out Courtyard by Marriott (11am) → Check in Fairfield Inn Newark (3pm)",
     center: { lat: 40.731, lng: -73.989 },
     zoom: 14,
     stops: [
       { id: 75, name: "Courtyard by Marriott", lat: 40.7524, lng: -73.9791, placeId: null, type: "hotel", notes: "3 East 40th St. Start of day. Check out 11am today!" },
-      { id: 45, name: "abcV", lat: 40.738, lng: -73.9893, placeId: "ChIJxXrbJaJZwokRAAEnPk3AJh4", type: "food", notes: "Breakfast. Opens 8am. OR Candle (386 3rd Ave, opens 11am)." },
-      { id: 46, name: "Candle", lat: 40.7419, lng: -73.9814, placeId: "ChIJn3v7DTNZwokRGmPnctINxp4", type: "food", notes: "Alternative to abcV. 386 3rd Ave. Opens 11am — better as brunch." },
+      { id: 46, name: "Candle", lat: 40.7419, lng: -73.9814, placeId: "ChIJn3v7DTNZwokRGmPnctINxp4", type: "food", notes: "Brunch. 386 3rd Ave. Opens 11am.", time: "11:00 AM" },
       { id: 19, name: "Metropolitan Museum of Art", lat: 40.7794, lng: -73.9632, placeId: "ChIJb8Jg9pZYwokR-qHGtvSkLzs", type: "museum", notes: "Opens 10am Fri. Allow 2+ hrs. Pay-what-you-wish for NY residents." },
+      { id: 66, name: "Central Park", lat: 40.7812, lng: -73.9665, placeId: null, type: "park", notes: "Walk through the park after the Met. Bethesda Terrace, Bow Bridge, Strawberry Fields." },
+      { id: 67, name: "Albertine Books", lat: 40.7746, lng: -73.9675, placeId: "ChIJ4ymG3JRYwokR56oMLRBvSB4", type: "books", notes: "French bookstore inside the French Embassy. 1004 Fifth Ave. Stunning ceiling murals." },
       { id: 47, name: "Strand Book Store", lat: 40.7333, lng: -73.991, placeId: "ChIJnSKGEJlZwokRQIpiCvzKzV4", type: "books", notes: "If not done Day 3. Opens 10am." },
       { id: 54, name: "Té Company", lat: 40.7284, lng: -73.9856, placeId: "ChIJ02UqP5RZwokR94y_zTN85qY", type: "food", notes: "Taiwanese tea shop. 314 E 9th St." },
       { id: 48, name: "Superiority Burger", lat: 40.7265, lng: -73.9835, placeId: "ChIJ26fKep1ZwokRrPzNIqBj4xU", type: "food", notes: "Lunch. 119 Ave A. Opens noon Fridays." },
@@ -196,4 +197,5 @@ export const savedStops = [
   { id: 9, name: "Westsider Rare & Used Books", lat: 40.7847, lng: -73.979, placeId: "ChIJOyW6JIZYwokRprVNTZPjc-w", type: "books", notes: "Opens 10am. Café Grumpy nearby for coffee.", from: "Day 2" },
   { id: 20, name: "Central Park—Belvedere", lat: 40.7797, lng: -73.9691, placeId: null, type: "park", notes: "Walk: Belvedere → Bethesda Terrace → Bow Bridge → Strawberry Fields.", from: "Day 3" },
   { id: 22, name: "Franchia Vegan Café", lat: 40.7476, lng: -73.9813, placeId: "ChIJwwO-oAdZwokRQ4RYQeCkjF4", type: "food", notes: "Korean vegan. Near hotel.", from: "Day 3" },
+  { id: 45, name: "abcV", lat: 40.738, lng: -73.9893, placeId: "ChIJxXrbJaJZwokRAAEnPk3AJh4", type: "food", notes: "Breakfast. Opens 8am.", from: "Day 6" },
 ];
