@@ -77,10 +77,9 @@ function createCameraIcon() {
   };
 }
 
-function createCustomStopIcon() {
+function createCustomStopIcon(number) {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28">
     <circle cx="14" cy="14" r="13" fill="#f59e0b" stroke="white" stroke-width="2"/>
-    <text x="14" y="19" text-anchor="middle" font-size="16" fill="white">+</text>
   </svg>`;
   return {
     url: "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(svg),
@@ -206,13 +205,50 @@ export default function TripMap({ day, filteredStops, selectedStop, onSelectStop
     customMarkersRef.current.forEach((m) => m.setMap(null));
     customMarkersRef.current = [];
 
+    // Compute merged display numbers (same logic as Sidebar)
+    const customArr = (customStops || []).map((cs) => ({
+      ...cs, _custom: true, position: cs.position ?? filteredStops.length,
+    }));
+    const sortedCustom = [...customArr].sort((a, b) => a.position - b.position);
+    const merged = [];
+    let stopIdx = 0;
+    let customIdx = 0;
+    const totalLen = filteredStops.length + sortedCustom.length;
+    for (let pos = 0; pos < totalLen; pos++) {
+      while (customIdx < sortedCustom.length && sortedCustom[customIdx].position <= pos) {
+        merged.push(sortedCustom[customIdx]);
+        customIdx++;
+        pos++;
+      }
+      if (stopIdx < filteredStops.length) {
+        merged.push(filteredStops[stopIdx]);
+        stopIdx++;
+      }
+    }
+    while (customIdx < sortedCustom.length) {
+      merged.push(sortedCustom[customIdx]);
+      customIdx++;
+    }
+    // Build a map of custom stop id -> display number
+    const customDisplayNums = {};
+    merged.forEach((item, idx) => {
+      if (item._custom) customDisplayNums[item.id] = idx + 1;
+    });
+
     (customStops || []).filter((s) => s.lat && s.lng).forEach((cs) => {
+      const displayNum = customDisplayNums[cs.id] || "+";
       const marker = new google.maps.Marker({
         position: { lat: cs.lat, lng: cs.lng },
         map: mapInstance.current,
-        icon: createCustomStopIcon(),
+        icon: createCustomStopIcon(displayNum),
         title: cs.name,
         zIndex: 2,
+        label: {
+          text: String(displayNum),
+          color: "white",
+          fontSize: "10px",
+          fontWeight: "bold",
+        },
       });
 
       marker.addListener("click", () => {
@@ -228,7 +264,7 @@ export default function TripMap({ day, filteredStops, selectedStop, onSelectStop
 
       customMarkersRef.current.push(marker);
     });
-  }, [customStops]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [customStops, filteredStops]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Update custom stop markers
   useEffect(() => {
