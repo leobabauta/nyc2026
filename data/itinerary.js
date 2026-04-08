@@ -135,7 +135,7 @@ export const days = [
     isoDate: "2026-04-10",
     title: "East Village → Newark",
     narrative:
-      "Final exploring day — breakfast at abcV, last bookstore visits, lunch at Superiority Burger, and a leisurely afternoon in Tompkins Square Park. Dinner at Avant Garden, then head to the Newark airport hotel for tomorrow's early flight.",
+      "Final exploring day — breakfast at abcV, morning at the Met, last bookstore visits, lunch at Superiority Burger, and a leisurely afternoon in Tompkins Square Park. Dinner at Avant Garden, then head to the Newark airport hotel for tomorrow's early flight.",
     hotel: "Check out Courtyard by Marriott (11am) → Check in Fairfield Inn Newark (3pm)",
     center: { lat: 40.731, lng: -73.989 },
     zoom: 14,
@@ -143,6 +143,7 @@ export const days = [
       { id: 75, name: "Courtyard by Marriott", lat: 40.7524, lng: -73.9791, placeId: null, type: "hotel", notes: "3 East 40th St. Start of day. Check out 11am today!" },
       { id: 45, name: "abcV", lat: 40.738, lng: -73.9893, placeId: "ChIJxXrbJaJZwokRAAEnPk3AJh4", type: "food", notes: "Breakfast. Opens 8am. OR Candle (386 3rd Ave, opens 11am)." },
       { id: 46, name: "Candle", lat: 40.7419, lng: -73.9814, placeId: "ChIJn3v7DTNZwokRGmPnctINxp4", type: "food", notes: "Alternative to abcV. 386 3rd Ave. Opens 11am — better as brunch." },
+      { id: 19, name: "Metropolitan Museum of Art", lat: 40.7794, lng: -73.9632, placeId: "ChIJb8Jg9pZYwokR-qHGtvSkLzs", type: "museum", notes: "Opens 10am Fri. Allow 2+ hrs. Pay-what-you-wish for NY residents." },
       { id: 47, name: "Strand Book Store", lat: 40.7333, lng: -73.991, placeId: "ChIJnSKGEJlZwokRQIpiCvzKzV4", type: "books", notes: "If not done Day 3. Opens 10am." },
       { id: 54, name: "Té Company", lat: 40.7284, lng: -73.9856, placeId: "ChIJ02UqP5RZwokR94y_zTN85qY", type: "food", notes: "Taiwanese tea shop. 314 E 9th St." },
       { id: 48, name: "Superiority Burger", lat: 40.7265, lng: -73.9835, placeId: "ChIJ26fKep1ZwokRrPzNIqBj4xU", type: "food", notes: "Lunch. 119 Ave A. Opens noon Fridays." },
@@ -193,7 +194,6 @@ export const savedStops = [
   { id: 7, name: "Housing Works Bookstore", lat: 40.7246, lng: -73.9966, placeId: "ChIJSaRjC49ZwokR402Rpxj6i9Q", type: "books", notes: "Used books + café. Beautiful spiral staircase.", from: "Day 1" },
   { id: 8, name: "Omakaseed", lat: 40.7584, lng: -73.9833, placeId: "ChIJo5gKgoJZwokRRvQUij2R7T8", type: "anchor", notes: "BOOKED. Vegan omakase 11–15 courses.", time: "7:30 PM", from: "Day 1" },
   { id: 9, name: "Westsider Rare & Used Books", lat: 40.7847, lng: -73.979, placeId: "ChIJOyW6JIZYwokRprVNTZPjc-w", type: "books", notes: "Opens 10am. Café Grumpy nearby for coffee.", from: "Day 2" },
-  { id: 19, name: "Metropolitan Museum of Art", lat: 40.7794, lng: -73.9632, placeId: "ChIJb8Jg9pZYwokR-qHGtvSkLzs", type: "museum", notes: "Opens 10am Tues. Allow 2+ hrs.", from: "Day 3" },
   { id: 20, name: "Central Park—Belvedere", lat: 40.7797, lng: -73.9691, placeId: null, type: "park", notes: "Walk: Belvedere → Bethesda Terrace → Bow Bridge → Strawberry Fields.", from: "Day 3" },
   { id: 22, name: "Franchia Vegan Café", lat: 40.7476, lng: -73.9813, placeId: "ChIJwwO-oAdZwokRQ4RYQeCkjF4", type: "food", notes: "Korean vegan. Near hotel.", from: "Day 3" },
 ];
