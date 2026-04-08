@@ -67,7 +67,7 @@ export const days = [
     isoDate: "2026-04-07",
     title: "NYPL & Flatiron",
     narrative:
-      "Brunch at UT47, then visit the stunning NY Public Library. Back to hotel for the 2pm call, lunch at PLANTA, then explore Flatiron bookstores and dinner at Coletta.",
+      "Brunch at UT47, then visit the stunning NY Public Library. Back to hotel for the 2pm call, lunch at PLANTA, then explore Flatiron bookstores.",
     hotel: "Courtyard by Marriott — 3 East 40th St",
     center: { lat: 40.758, lng: -73.978 },
     zoom: 13,
@@ -80,7 +80,6 @@ export const days = [
       { id: 24, name: "Rizzoli Bookstore", lat: 40.7436, lng: -73.9892, placeId: "ChIJg3UvcfpYwokRDr3VC4a_dt0", type: "books", notes: "One of the most beautiful bookstores in NYC." },
       { id: 25, name: "Anita La Mamma del Gelato", lat: 40.744, lng: -73.9892, placeId: "ChIJkd9WcVVZwokRZTGJvhrZOB0", type: "food", notes: "Just south of Rizzoli near Madison Square Park." },
       { id: 26, name: "Strand Book Store", lat: 40.7333, lng: -73.991, placeId: "ChIJnSKGEJlZwokRQIpiCvzKzV4", type: "books", notes: "18 miles of books." },
-      { id: 27, name: "Coletta", lat: 40.7409, lng: -73.9812, placeId: "ChIJhcaYBC5ZwokRnPUwEfUc8lU", type: "food", notes: "Dinner. Vegan Italian. Opens 4:30pm." },
     ],
   },
   {
@@ -89,7 +88,7 @@ export const days = [
     isoDate: "2026-04-08",
     title: "MoMA & Maybe Happy Ending",
     narrative:
-      "Grab a doughnut at Doughnut Plant, then spend the morning at MoMA. Catch the matinee of Maybe Happy Ending, visit the NYPL reading room, and wrap up with dinner at Hangawi.",
+      "Grab a doughnut at Doughnut Plant, then spend the morning at MoMA. Catch the matinee of Maybe Happy Ending, visit the NYPL reading room, and wrap up with dinner at Coletta.",
     hotel: "Courtyard by Marriott — 3 East 40th St",
     center: { lat: 40.757, lng: -73.982 },
     zoom: 14,
@@ -100,7 +99,7 @@ export const days = [
       { id: 30, name: "Beyond Sushi", lat: 40.7633, lng: -73.9772, placeId: "ChIJFy8n9PlYwokRVeEJbuCg2UE", type: "food", notes: "Lunch. Vegan sushi, steps from MoMA." },
       { id: 31, name: "Belasco Theatre", lat: 40.7566, lng: -73.9839, placeId: "ChIJv2zhJFVYwokRaeXVxr3-X0U", type: "anchor", notes: "BOOKED. Maybe Happy Ending. ~2.5 hrs.", time: "2:00 PM" },
       { id: 32, name: "Rose Main Reading Room", lat: 40.7531, lng: -73.9822, placeId: "ChIJ41L4bwBZwokRefwq7Pyh1mI", type: "museum", notes: "Free. NYPL. Closes 5:45pm Wed." },
-      { id: 33, name: "Hangawi", lat: 40.7466, lng: -73.9848, placeId: "ChIJtSk6aqhZwokRAA7X1yq7onk", type: "food", notes: "Dinner. Book 5:30–6pm. Shoes-off Korean vegan." },
+      { id: 27, name: "Coletta", lat: 40.7409, lng: -73.9812, placeId: "ChIJhcaYBC5ZwokRnPUwEfUc8lU", type: "food", notes: "Dinner. Vegan Italian. Opens 4:30pm." },
     ],
   },
   {
@@ -135,7 +134,7 @@ export const days = [
     isoDate: "2026-04-10",
     title: "East Village → Newark",
     narrative:
-      "Final exploring day — breakfast at abcV, morning at the Met, last bookstore visits, lunch at Superiority Burger, and a leisurely afternoon in Tompkins Square Park. Dinner at Avant Garden, then head to the Newark airport hotel for tomorrow's early flight.",
+      "Final exploring day — breakfast at abcV, morning at the Met, last bookstore visits, lunch at Superiority Burger, and a leisurely afternoon in Tompkins Square Park. Dinner at Hangawi, then head to the Newark airport hotel for tomorrow's early flight.",
     hotel: "Check out Courtyard by Marriott (11am) → Check in Fairfield Inn Newark (3pm)",
     center: { lat: 40.731, lng: -73.989 },
     zoom: 14,
@@ -149,7 +148,8 @@ export const days = [
       { id: 48, name: "Superiority Burger", lat: 40.7265, lng: -73.9835, placeId: "ChIJ26fKep1ZwokRrPzNIqBj4xU", type: "food", notes: "Lunch. 119 Ave A. Opens noon Fridays." },
       { id: 49, name: "Mast Books", lat: 40.7247, lng: -73.9843, placeId: "ChIJBXpzwIJZwokRhOAu4SUGDds", type: "books", notes: "72 Ave A. Beautifully curated art & photography books." },
       { id: 50, name: "Tompkins Sq Park", lat: 40.7272, lng: -73.9818, placeId: null, type: "park", notes: "Sit with your book. Site of annual Howl festival." },
-      { id: 51, name: "Avant Garden", lat: 40.7257, lng: -73.9841, placeId: "ChIJhesNT51ZwokRqIACbMxk2BQ", type: "food", notes: "Dinner. 95 Ave A. Opens 5pm." },
+      { id: 33, name: "Hangawi", lat: 40.7466, lng: -73.9848, placeId: "ChIJtSk6aqhZwokRAA7X1yq7onk", type: "food", notes: "Dinner. Book 5:30–6pm. Shoes-off Korean vegan." },
+      { id: 51, name: "Avant Garden", lat: 40.7257, lng: -73.9841, placeId: "ChIJhesNT51ZwokRqIACbMxk2BQ", type: "food", notes: "Alternative dinner. 95 Ave A. Opens 5pm." },
       { id: 53, name: "The Immigrant", lat: 40.7267, lng: -73.9847, placeId: "ChIJD3akTZ1ZwokRN6BKz0AAORU", type: "food", notes: "Cozy East Village bar. Great cocktails and vibe. Opens 5pm." },
       { id: 52, name: "Ladybird", lat: 40.7267, lng: -73.9845, placeId: "ChIJdWfZe5FZwokR8k6hhjU5uQo", type: "food", notes: "Cocktails after dinner. 111 E 7th, around the corner." },
       { id: 55, name: "Manhattan → Newark", lat: 40.7128, lng: -74.0060, placeId: null, type: "transport", notes: "NJ Transit or taxi to Newark. Penn Station → Newark Penn ~25 min." },
