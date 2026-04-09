@@ -116,6 +116,7 @@ export const days = [
       { id: 74, name: "Courtyard by Marriott", lat: 40.7524, lng: -73.9791, placeId: null, type: "hotel", notes: "3 East 40th St. Start of day." },
       { id: 34, name: "Cloudy Donut", lat: 40.6888, lng: -73.9955, placeId: null, type: "food", notes: "Vegan doughnuts. 14 Columbia Pl, Brooklyn Heights." },
       { id: 35, name: "Cafe con Libros", lat: 40.6743, lng: -73.9526, placeId: "ChIJd8hmM5xbwokR_CrQGaACpk0", type: "books", notes: "Black feminist bookstore + café. Closes 2pm weekdays." },
+      { id: 68, name: "Freebird Books", lat: 40.6788, lng: -73.9993, placeId: null, type: "books", notes: "123 Columbia St, Red Hook. Community bookstore & social justice focus." },
       { id: 36, name: "Unnameable Books", lat: 40.6788, lng: -73.9683, placeId: "ChIJxWzqeqZbwokRRfuaT-IC6RQ", type: "books", notes: "Prospect Heights. Great philosophy + literary fiction." },
       { id: 37, name: "Greenlight Bookstore", lat: 40.6862, lng: -73.9746, placeId: "ChIJjTxYtrFbwokRLcr7cM149Uo", type: "books", notes: "686 Fulton St, Fort Greene." },
       { id: 38, name: "Books Are Magic", lat: 40.684, lng: -73.9921, placeId: "ChIJOUoR41BawokR5s3MlYwVqyU", type: "books", notes: "225 Smith St, Cobble Hill. Author-owned indie." },
